@@ -38,9 +38,12 @@ work = r"D:\gavel\models\training_state\readout"
 os.makedirs(work, exist_ok=True)
 made = {}
 for L in LAYERS:
-    X = torch.cat(list(D[f"last_L{L}"]), 0).float()          # sorted order
+    X = torch.cat(list(D[f"last_L{L}"]), 0).float()          # length-sorted order
+    # order[j] = pair index at sorted position j, so X[j] belongs to
+    # pair order[j]. Unpack as (sorted_position, pair_index) — swapping these
+    # scrambles every row and silently destroys the comparison.
     Xo = torch.empty_like(X)
-    for p, j in enumerate(order):
+    for j, p in enumerate(order):
         Xo[p] = X[j]                                          # -> original order
     path = os.path.join(work, f"pair_hiddens_L{L}.pt")
     torch.save({"hiddens": Xo.half(), "targets": targets, "order": item_names,

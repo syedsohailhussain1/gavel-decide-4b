@@ -1,46 +1,66 @@
-# Read-out ablation: the shipped head reads the wrong layer
+# Read-out ablation: the shipped head reads the right layer (hypothesis refuted)
 
-Date: 2026-09-26. Trunk `Qwen/Qwen3-4B-Base`, frozen. 231 public items,
+**Status: hypothesis REFUTED on the production recipe.** This file previously
+reported the opposite. Both results are kept below because the negative result
+is the useful one.
+
+Date: 2026-09-26. Trunk `Qwen3-4B-Base`, frozen. 231 public items,
 849 option sequences. All Gavel: cached forward, cheap MLP head, no trunk
 training.
 
-## The finding
+## Result (production recipe: `train_head.py`, 60 epochs, lr 1e-4, bs 256, seed 20260924)
 
-The shipped head reads **one vector: the last token of the FINAL layer (L36)**.
-Training the identical head on identical cached forwards, changing only which
-layer is read, gives a clean inverted-U with the shipped read-out at the
-bottom:
+| read-out | item acc | easy | std | hard | best_ep |
+|---|---|---|---|---|---|
+| **last_L36 (shipped)** | **0.8404** | 0.979 | 0.850 | **0.771** | 33 |
+| last_L20 | 0.7465 | 1.000 | 0.750 | 0.629 | 14 |
+| last_L21 | 0.7277 | 1.000 | 0.733 | 0.600 | 14 |
 
-```
-L0  0.175   L13 0.456   L19 0.632   L23 0.632   L30 0.614   L35 0.538
-L1  0.193   L14 0.515   L20 0.632   L24 0.620   L31 0.620   L36 0.328  <-- SHIPPED
-L2  0.269   L15 0.532   L21 0.626   L25 0.573   L32 0.579
-L6  0.298   L16 0.556   L22 0.620   L26 0.561   L33 0.573
-L8  0.386   L17 0.597                L27 0.561   L34 0.550
-```
+The shipped final-layer read-out is the best of the three, with the best hard
+tier and the most stable optimisation (best_ep 33 vs 14). No change warranted.
 
-Confirmed with 5-fold CV over items, temperature refit inside each fold:
+## The earlier "L20 doubles accuracy" result was a harness artifact
 
-| read-out | OOF item acc | easy | std | hard |
-|---|---|---|---|---|
-| **last_L20** | **0.6645 ± 0.0031** | 0.938 | 0.778 | 0.473 |
-| last_L36 (shipped) | 0.4329 ± 0.0429 | 0.719 | 0.451 | 0.297 |
+A first pass reported L20 0.6645 vs L36 0.4329 out-of-fold (paired: fixes 82,
+breaks 22, z = 5.79). That was measured under a broken harness in which L36
+could not train properly (best_ep 5) while L20 could. It was measuring
+trainability, not read-out quality. Three separate defects, each caught by a
+gate:
 
-Paired per item: L20 fixes **82**, breaks **22** (continuity-corrected
-z = 5.79). The shipped read-out is also 14x less stable across seeds.
+1. **Scrambled features.** `for p, j in enumerate(order): Xo[p] = X[j]` unpacks
+   as `p=position, j=order[position]`, so rows were permuted wrongly. Proof: the
+   shipped head scored 0.3474 on the scrambled file where the correct answer is
+   0.8216. Fixed to `for j, p in enumerate(order)`.
+2. **Wrong recipe.** 40 epochs at lr 3e-4 was guessed; the real run is 60 epochs
+   at lr 1e-4 (recovered from `combined_head_report.json`: val_acc 0.6119,
+   best_ep 31 — a sweep reproduced val_acc 0.614 / best_ep 33).
+3. **NLI rows dropped.** `train_head.py`'s split covers all 1073 items including
+   the 1,720 NLI rows; excluding them trains on 689 instead of 2,409.
 
-**It costs nothing at inference.** The forward pass computes all 37 hidden
-states regardless; we were simply throwing 36 of them away.
+Also checked and ruled out: the shipped cache is `MAXT=512` but the training
+pairs are short (p50 43 tokens, max 252), so **nothing is ever truncated** —
+context length is not a confound here.
 
-Interpretation: the final layers of an LLM specialise next-token prediction, so
-the last-token state is optimised for "what comes next" rather than for
-representing state+question+option. A mid-stack layer carries a far more usable
-summary.
+## What did survive: bf16 features beat 4-bit features
 
-Corroboration from an independent source: `decider` (the #1 JevBench entry)
-reads hidden states at dedicated **answer slots** and projects them onto option
-label tokens — the same principle, put the read-out where the signal is. They
-do it with a full fine-tune; we get part of it for free from a frozen trunk.
+Same layer, same recipe, only the cache precision differs:
+
+| cache | item acc |
+|---|---|
+| shipped, bitsandbytes nf4 | 0.8028 (retrained) / 0.8216 (shipped head) |
+| **ours, bf16** | **0.8404** |
+
++1.9 points for free — we serve in bf16 regardless, so there is no inference
+cost. This is 4 items out of 213, inside the noise band (SE ~0.025), so it is
+suggestive rather than established. Confirming it needs a full 231-item run with
+the new head, which costs GPU time we have not spent.
+
+## Gates used (all in `scripts/prod_readout_final.py`)
+
+- shipped head on shipped cache must score ~0.82
+- shipped head on our cache must score ~0.78 (cache faithfulness)
+- retrained head on shipped cache must score ~0.80 (recipe reproduction)
+
 
 ## Context length is NOT the lever
 
