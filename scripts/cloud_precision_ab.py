@@ -69,8 +69,10 @@ def profile(lm, dev, tag):
     a, b = fit(pts)
     print(f"fit: ms = {a:.1f} + {b:.3f}*tok   "
           f"(fixed {a:.0f}ms, {1000/b:.0f} tok/s marginal)", flush=True)
+    ms512 = a + b * 512
     return {"fixed_ms": a, "ms_per_token": b, "points": pts,
-            "tok_per_s_512": 1000 / (a + b * 512)}
+            "ms_at_512": ms512,
+            "tok_per_s_512": 512 / (ms512 / 1000.0)}
 
 
 def main():
@@ -92,10 +94,10 @@ def main():
 
     # decisions under bf16, to compare against 4-bit later
     torch.manual_seed(0)
-    probe = [tok(f"State: the sky is blue and water is wet. "
-                 f"Question: what colour is the sky? Option: {c}",
-                 return_tensors="pt", truncation=True, max_length=64).to(dev)
-             for c in ("blue", "green", "red", "grey")]
+    probe = {k: v.to(dev) for k, v in tok(
+        "State: the sky is blue and water is wet. "
+        "Question: what colour is the sky? Option: blue",
+        return_tensors="pt", truncation=True, max_length=64).items()}
     with torch.no_grad():
         h16 = lm16(**probe, output_hidden_states=True, logits_to_keep=1,
                    return_dict=True).hidden_states[-1][:, -1].float()

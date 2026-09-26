@@ -1,0 +1,39 @@
+{
+  "dtype": "bf16",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb",
+  "n_items": 231,
+  "n_correct": 172,
+  "accuracy": 0.7445887445887446,
+  "tier_accuracy": {
+    "easy": 0.9166666666666666,
+    "standard": 0.7222222222222222,
+    "hard": 0.6846846846846847
+  },
+  "tier_chance_corrected": {
+    "easy": 88.36081474296799,
+    "standard": 59.34959349593496,
+    "hard": 52.48130880052332
+  },
+  "calibration_axis": 79.16011630199998,
+  "hard_binned_ece": 0.10419941849000015,
+  "latency_p50_s": {
+    "easy": 0.046418081037700176,
+    "standard": 0.04585060104727745,
+    "hard": 0.1819285519886762
+  },
+  "latency_p95_s": {
+    "easy": 0.19284963293466717,
+    "standard": 0.2218811120837927,
+    "hard": 0.2805958869867027
+  },
+  "speed_axis_standard_proxy": 88.43108625808,
+  "wall_clock_s": 31.935626758961007,
+  "s_per_decision": 0.13824946648900868,
+  "mean_input_tokens": 721.3203463203463,
+  "path_mix": {
+    "cached": 144,
+    "naive": 87,
+    "cached_tokens": 52876,
+    "naive_tokens": 166625
+  }
+}

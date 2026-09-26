@@ -71,7 +71,7 @@ def main():
     print(f"[dtype] {A.dtype}   prefix_cache="
           f"{os.environ.get('GAVEL_PREFIX_CACHE', '1')}", flush=True)
 
-    ad = GA.GavelLocalAdapter(trunk=A.trunk, head=A.head, ctx=A.ctx,
+    ad = GA.GavelLocalAdapter(endpoint=A.trunk, head=A.head, ctx=A.ctx,
                               dtype=A.dtype)
     t0 = time.perf_counter()
     ad.load()

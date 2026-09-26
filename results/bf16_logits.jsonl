@@ -1,0 +1,231 @@
+{"task_id": "easy-intent-00", "labels": ["track_order", "cancel_order", "change_address", "report_damage", "billing_question"], "logits": [2.5764856338500977, -1.272064208984375, -0.05562666058540344, -2.72933292388916, 1.585982084274292]}
+{"task_id": "easy-intent-01", "labels": ["track_order", "cancel_order", "change_address", "report_damage", "billing_question"], "logits": [0.9646981358528137, 1.7275354862213135, -0.8535391688346863, -3.0257091522216797, 0.3846796154975891]}
+{"task_id": "easy-intent-02", "labels": ["track_order", "cancel_order", "change_address", "report_damage", "billing_question"], "logits": [1.491999626159668, -2.267263889312744, 2.013190507888794, -2.9975128173828125, 0.798427402973175]}
+{"task_id": "easy-intent-03", "labels": ["track_order", "cancel_order", "change_address", "report_damage", "billing_question"], "logits": [0.6777669191360474, -0.8198640942573547, -2.852083206176758, -0.4193616509437561, -1.357090950012207]}
+{"task_id": "easy-intent-04", "labels": ["track_order", "cancel_order", "change_address", "report_damage", "billing_question"], "logits": [0.4910421669483185, -3.3051071166992188, -2.6406190395355225, -4.716643333435059, 0.6956933736801147]}
+{"task_id": "easy-intent-05", "labels": ["track_order", "cancel_order", "change_address", "report_damage", "billing_question"], "logits": [1.860854148864746, -2.759406089782715, -1.315075159072876, -3.634815216064453, 0.650682806968689]}
+{"task_id": "easy-intent-06", "labels": ["set_alarm", "play_music", "weather", "send_message", "turn_off_lights"], "logits": [2.0225491523742676, -0.9439240097999573, -1.9631855487823486, -1.6059670448303223, -3.069520950317383]}
+{"task_id": "easy-intent-07", "labels": ["set_alarm", "play_music", "weather", "send_message", "turn_off_lights"], "logits": [-1.190140962600708, 2.3873507976531982, -1.8005659580230713, -1.3263614177703857, -3.7209248542785645]}
+{"task_id": "easy-intent-08", "labels": ["set_alarm", "play_music", "weather", "send_message", "turn_off_lights"], "logits": [-1.3225605487823486, -1.963613748550415, 2.723668098449707, -1.8793799877166748, -3.737874746322632]}
+{"task_id": "easy-intent-09", "labels": ["set_alarm", "play_music", "weather", "send_message", "turn_off_lights"], "logits": [-0.15572704374790192, -0.41800591349601746, -0.7853699326515198, 2.285208225250244, -2.6146914958953857]}
+{"task_id": "easy-intent-10", "labels": ["set_alarm", "play_music", "weather", "send_message", "turn_off_lights"], "logits": [-1.9533917903900146, -1.9731147289276123, -2.5980098247528076, -2.6584270000457764, 0.020283371210098267]}
+{"task_id": "easy-intent-11", "labels": ["set_alarm", "play_music", "weather", "send_message", "turn_off_lights"], "logits": [2.132842779159546, -1.077744483947754, -1.9530422687530518, -1.8049273490905762, -3.6212780475616455]}
+{"task_id": "easy-fact-00", "labels": ["no", "yes"], "logits": [-1.1920604705810547, -0.3969602882862091]}
+{"task_id": "easy-fact-01", "labels": ["no", "yes"], "logits": [0.17964546382427216, -1.1205432415008545]}
+{"task_id": "easy-fact-02", "labels": ["no", "yes"], "logits": [-0.9145581722259521, 0.011760234832763672]}
+{"task_id": "easy-fact-03", "labels": ["no", "yes"], "logits": [1.1119792461395264, -0.9297435879707336]}
+{"task_id": "easy-fact-04", "labels": ["no", "yes"], "logits": [-0.09477582573890686, -0.22590184211730957]}
+{"task_id": "easy-fact-05", "labels": ["no", "yes"], "logits": [0.8585992455482483, -1.4086298942565918]}
+{"task_id": "easy-fact-06", "labels": ["no", "yes"], "logits": [0.5523867607116699, 0.3449472188949585]}
+{"task_id": "easy-fact-07", "labels": ["no", "yes"], "logits": [1.1189124584197998, -0.5364634394645691]}
+{"task_id": "easy-fact-08", "labels": ["no", "yes"], "logits": [-0.12060077488422394, 0.05230391025543213]}
+{"task_id": "easy-fact-09", "labels": ["no", "yes"], "logits": [0.7375653386116028, -0.9976281523704529]}
+{"task_id": "easy-fact-10", "labels": ["no", "yes"], "logits": [0.03716336190700531, 0.06775128096342087]}
+{"task_id": "easy-fact-11", "labels": ["no", "yes"], "logits": [1.0690333843231201, -0.776849627494812]}
+{"task_id": "easy-extraction-00", "labels": ["credit_card", "paypal", "bank_transfer", "cash"], "logits": [-2.0020394325256348, 2.971322536468506, -0.9912044405937195, -2.6068897247314453]}
+{"task_id": "easy-extraction-01", "labels": ["credit_card", "paypal", "bank_transfer", "cash"], "logits": [-0.2930774688720703, -2.709336996078491, -0.06872045993804932, 2.4035489559173584]}
+{"task_id": "easy-extraction-02", "labels": ["credit_card", "paypal", "bank_transfer", "cash"], "logits": [-1.9437012672424316, -2.25708270072937, 1.5907642841339111, -1.6953637599945068]}
+{"task_id": "easy-extraction-03", "labels": ["low", "medium", "high", "urgent"], "logits": [-1.6674396991729736, -1.9316186904907227, 0.7196850180625916, -1.9175946712493896]}
+{"task_id": "easy-extraction-04", "labels": ["low", "medium", "high", "urgent"], "logits": [0.5570226907730103, -1.267791509628296, -1.3438818454742432, -2.996342658996582]}
+{"task_id": "easy-extraction-05", "labels": ["low", "medium", "high", "urgent"], "logits": [-1.0503487586975098, -1.1092679500579834, -0.07508614659309387, -0.7280499935150146]}
+{"task_id": "easy-extraction-06", "labels": ["S", "M", "L", "XL"], "logits": [-2.039005994796753, 1.475879430770874, -2.166863441467285, -1.3178789615631104]}
+{"task_id": "easy-extraction-07", "labels": ["S", "M", "L", "XL"], "logits": [-2.045440673828125, -0.9121726155281067, -1.3275303840637207, 2.2238235473632812]}
+{"task_id": "easy-extraction-08", "labels": ["monday", "tuesday", "wednesday", "thursday", "friday"], "logits": [-2.107631206512451, -1.8950836658477783, -1.4925222396850586, 2.7723538875579834, -0.629352867603302]}
+{"task_id": "easy-extraction-09", "labels": ["monday", "tuesday", "wednesday", "thursday", "friday"], "logits": [2.433316707611084, -3.995699882507324, -3.8716728687286377, -3.7180821895599365, -3.7076988220214844]}
+{"task_id": "easy-extraction-10", "labels": ["monday", "tuesday", "wednesday", "thursday", "friday"], "logits": [-4.061958312988281, -3.9510202407836914, -4.2658491134643555, -3.77471923828125, 2.725250005722046]}
+{"task_id": "easy-extraction-11", "labels": ["credit_card", "paypal", "bank_transfer", "cash"], "logits": [3.0713977813720703, -3.317453384399414, -0.684408962726593, -3.181788921356201]}
+{"task_id": "easy-tool_selection-00", "labels": ["get_weather", "send_email", "create_calendar_event", "convert_currency", "translate_text"], "logits": [1.7724575996398926, 0.7979558706283569, -2.458980083465576, 0.4262033700942993, -0.7131133079528809]}
+{"task_id": "easy-tool_selection-01", "labels": ["get_weather", "send_email", "create_calendar_event", "convert_currency", "translate_text"], "logits": [-2.5457615852355957, 3.6756591796875, -2.666168212890625, -0.27870839834213257, -1.81475830078125]}
+{"task_id": "easy-tool_selection-02", "labels": ["get_weather", "send_email", "create_calendar_event", "convert_currency", "translate_text"], "logits": [-3.30116868019104, -0.3835962414741516, 1.2047131061553955, -1.226663589477539, -2.4012451171875]}
+{"task_id": "easy-tool_selection-03", "labels": ["get_weather", "send_email", "create_calendar_event", "convert_currency", "translate_text"], "logits": [-2.4272139072418213, 0.9789569973945618, -2.4258511066436768, 2.447972536087036, 0.2163846492767334]}
+{"task_id": "easy-tool_selection-04", "labels": ["get_weather", "send_email", "create_calendar_event", "convert_currency", "translate_text"], "logits": [-1.4636318683624268, 2.1126351356506348, -1.6107432842254639, 1.2388863563537598, 2.359544038772583]}
+{"task_id": "easy-tool_selection-05", "labels": ["get_weather", "send_email", "create_calendar_event", "convert_currency", "translate_text"], "logits": [-3.435131311416626, -0.17227065563201904, 0.40357059240341187, -0.50466388463974, -2.2110867500305176]}
+{"task_id": "easy-tool_selection-06", "labels": ["search_flights", "book_restaurant", "set_reminder", "get_stock_price", "call_taxi"], "logits": [2.1043715476989746, -4.468749046325684, -0.898563802242279, -0.04562985897064209, -4.710628509521484]}
+{"task_id": "easy-tool_selection-07", "labels": ["search_flights", "book_restaurant", "set_reminder", "get_stock_price", "call_taxi"], "logits": [-3.0308403968811035, 3.2159976959228516, 0.03771725296974182, -0.6386340856552124, -4.297454833984375]}
+{"task_id": "easy-tool_selection-08", "labels": ["search_flights", "book_restaurant", "set_reminder", "get_stock_price", "call_taxi"], "logits": [-3.894927740097046, -5.402510643005371, 2.4709277153015137, -0.7188900113105774, -5.316280364990234]}
+{"task_id": "easy-tool_selection-09", "labels": ["search_flights", "book_restaurant", "set_reminder", "get_stock_price", "call_taxi"], "logits": [-2.499063014984131, -3.2381136417388916, -1.302137851715088, 3.02004337310791, -4.146851539611816]}
+{"task_id": "easy-tool_selection-10", "labels": ["search_flights", "book_restaurant", "set_reminder", "get_stock_price", "call_taxi"], "logits": [-3.4871902465820312, -4.751777648925781, -1.8808810710906982, -0.33367040753364563, 0.4416854977607727]}
+{"task_id": "easy-tool_selection-11", "labels": ["search_flights", "book_restaurant", "set_reminder", "get_stock_price", "call_taxi"], "logits": [-3.0831003189086914, -5.148041725158691, 2.256744384765625, -0.44332098960876465, -5.73187255859375]}
+{"task_id": "original-policy-01-0", "labels": ["no", "yes"], "logits": [0.786318302154541, -0.992094099521637]}
+{"task_id": "original-policy-01-1", "labels": ["no", "yes"], "logits": [1.0330971479415894, -0.9583567976951599]}
+{"task_id": "original-policy-02-0", "labels": ["no", "yes"], "logits": [-0.22006738185882568, -0.25967004895210266]}
+{"task_id": "original-policy-02-1", "labels": ["no", "yes"], "logits": [0.6662371158599854, -0.18268199265003204]}
+{"task_id": "original-policy-03-0", "labels": ["no", "yes"], "logits": [-0.7289203405380249, -0.0007245689630508423]}
+{"task_id": "original-policy-03-1", "labels": ["no", "yes"], "logits": [-0.996202290058136, -0.7006468176841736]}
+{"task_id": "original-policy-04-0", "labels": ["no", "yes"], "logits": [1.4794495105743408, -0.21819984912872314]}
+{"task_id": "original-policy-04-1", "labels": ["no", "yes"], "logits": [1.0406014919281006, -0.20016995072364807]}
+{"task_id": "original-policy-05-0", "labels": ["no", "yes"], "logits": [0.7958840131759644, -0.4621245265007019]}
+{"task_id": "original-policy-05-1", "labels": ["no", "yes"], "logits": [0.621234118938446, -0.5941591262817383]}
+{"task_id": "original-policy-06-0", "labels": ["no", "yes"], "logits": [-0.709503173828125, 0.25812897086143494]}
+{"task_id": "original-policy-06-1", "labels": ["no", "yes"], "logits": [-0.9556609988212585, -0.27987247705459595]}
+{"task_id": "original-intent-01-0", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [1.2893955707550049, -4.146240234375, -1.1790015697479248, -2.6962180137634277, -0.9556183218955994]}
+{"task_id": "original-intent-01-1", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.15416686236858368, -3.739819288253784, -0.61672043800354, -3.1751885414123535, -1.1711976528167725]}
+{"task_id": "original-intent-02-0", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-1.4092891216278076, -5.324546813964844, 1.7197606563568115, -2.305982828140259, -1.304288387298584]}
+{"task_id": "original-intent-02-1", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.518824577331543, -5.096277236938477, 2.563110828399658, -1.6746017932891846, -1.0607481002807617]}
+{"task_id": "original-intent-03-0", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.15133564174175262, -4.610682487487793, 0.3822151720523834, 0.9939382076263428, -0.9514071345329285]}
+{"task_id": "original-intent-03-1", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.6628970503807068, -5.295208930969238, 1.0873146057128906, 1.3825204372406006, -1.2614154815673828]}
+{"task_id": "original-intent-04-0", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [1.7595667839050293, -4.743618488311768, -1.2599983215332031, -3.8903236389160156, -1.182680606842041]}
+{"task_id": "original-intent-04-1", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [0.017614781856536865, -5.654004096984863, -2.78497314453125, -3.6289968490600586, -1.260474443435669]}
+{"task_id": "original-intent-05-0", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.09855848550796509, -3.733705520629883, -2.4018359184265137, -3.0490598678588867, -1.4741630554199219]}
+{"task_id": "original-intent-05-1", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [0.2196730375289917, -3.417372703552246, -1.6135962009429932, -3.434022903442383, -1.7131686210632324]}
+{"task_id": "original-intent-06-0", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.12884457409381866, -5.032392978668213, 1.774280071258545, -2.997781991958618, -1.8706848621368408]}
+{"task_id": "original-intent-06-1", "labels": ["cancel", "refund", "status", "change_address", "other"], "logits": [-0.4397229552268982, -4.905888557434082, 2.258713722229004, -2.9812464714050293, -1.83243989944458]}
+{"task_id": "original-ordinal-01-0", "labels": ["0", "1", "2", "3"], "logits": [-2.8999533653259277, -5.687187194824219, -0.10263681411743164, 1.2642226219177246]}
+{"task_id": "original-ordinal-01-1", "labels": ["0", "1", "2", "3"], "logits": [-3.0385756492614746, -5.867828369140625, 0.008566349744796753, 1.3093185424804688]}
+{"task_id": "original-ordinal-02-0", "labels": ["0", "1", "2", "3"], "logits": [-3.201289653778076, -5.314017295837402, 0.4672923982143402, 1.6432855129241943]}
+{"task_id": "original-ordinal-02-1", "labels": ["0", "1", "2", "3"], "logits": [-3.0508904457092285, -5.246311187744141, 0.03781920671463013, 1.4651238918304443]}
+{"task_id": "original-ordinal-03-0", "labels": ["0", "1", "2", "3"], "logits": [-3.0370612144470215, -5.370809555053711, 0.8013791441917419, 1.4752542972564697]}
+{"task_id": "original-ordinal-03-1", "labels": ["0", "1", "2", "3"], "logits": [-3.385610580444336, -5.738664627075195, 0.5166489481925964, 1.4073328971862793]}
+{"task_id": "original-ordinal-04-0", "labels": ["0", "1", "2", "3"], "logits": [-3.4858627319335938, -5.58145809173584, 0.6298758387565613, 1.4597089290618896]}
+{"task_id": "original-ordinal-04-1", "labels": ["0", "1", "2", "3"], "logits": [-2.955169677734375, -5.422151565551758, 0.7256200313568115, 1.5479507446289062]}
+{"task_id": "original-ordinal-05-0", "labels": ["0", "1", "2", "3"], "logits": [-3.51816463470459, -5.599701404571533, 0.9238114953041077, 0.8721319437026978]}
+{"task_id": "original-ordinal-05-1", "labels": ["0", "1", "2", "3"], "logits": [-3.6251230239868164, -6.1220855712890625, 0.07487207651138306, 1.3879427909851074]}
+{"task_id": "original-ordinal-06-0", "labels": ["0", "1", "2", "3"], "logits": [-3.1567635536193848, -5.414360046386719, 0.24417352676391602, 1.364133358001709]}
+{"task_id": "original-ordinal-06-1", "labels": ["0", "1", "2", "3"], "logits": [-3.6810619831085205, -6.079067230224609, -0.578583300113678, 1.317993402481079]}
+{"task_id": "original-extraction-01-0", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-0.33188846707344055, 1.5487370491027832, -2.5773863792419434, -0.35300901532173157]}
+{"task_id": "original-extraction-01-1", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-3.795454502105713, 1.377526044845581, -3.0645194053649902, -1.065159797668457]}
+{"task_id": "original-extraction-02-0", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-1.9947457313537598, -1.972947120666504, -0.8238982558250427, 0.7201474905014038]}
+{"task_id": "original-extraction-02-1", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-2.0704283714294434, -2.333479881286621, -2.199331283569336, 0.921631395816803]}
+{"task_id": "original-extraction-03-0", "labels": ["courier", "pickup", "post", "unknown"], "logits": [1.6235530376434326, -1.3340163230895996, -3.9060518741607666, -0.26317712664604187]}
+{"task_id": "original-extraction-03-1", "labels": ["courier", "pickup", "post", "unknown"], "logits": [2.5160598754882812, -1.688805103302002, -3.0349225997924805, -0.1380632221698761]}
+{"task_id": "original-extraction-04-0", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-0.5842354893684387, 0.38014042377471924, 2.7192695140838623, -0.43622297048568726]}
+{"task_id": "original-extraction-04-1", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-0.9192175269126892, -2.6751604080200195, 2.633293390274048, -0.0642862319946289]}
+{"task_id": "original-extraction-05-0", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-2.0549662113189697, -1.0508649349212646, -4.537513256072998, 1.3301782608032227]}
+{"task_id": "original-extraction-05-1", "labels": ["courier", "pickup", "post", "unknown"], "logits": [-2.5969629287719727, -2.5992681980133057, -4.756453514099121, 0.16462890803813934]}
+{"task_id": "original-extraction-06-0", "labels": ["courier", "pickup", "post", "unknown"], "logits": [0.627508819103241, -2.585207462310791, -1.6714115142822266, -0.6253042817115784]}
+{"task_id": "original-extraction-06-1", "labels": ["courier", "pickup", "post", "unknown"], "logits": [1.9715485572814941, -1.5212950706481934, -3.1812691688537598, -0.5317174196243286]}
+{"task_id": "original-adequacy-01-0", "labels": ["no", "yes"], "logits": [-0.27964717149734497, -0.5979805588722229]}
+{"task_id": "original-adequacy-01-1", "labels": ["no", "yes"], "logits": [-0.8168025612831116, -0.19174790382385254]}
+{"task_id": "original-adequacy-02-0", "labels": ["no", "yes"], "logits": [-0.5920794606208801, -1.1620466709136963]}
+{"task_id": "original-adequacy-02-1", "labels": ["no", "yes"], "logits": [-0.15976476669311523, -1.2138490676879883]}
+{"task_id": "original-adequacy-03-0", "labels": ["no", "yes"], "logits": [-0.488211452960968, -0.7899077534675598]}
+{"task_id": "original-adequacy-03-1", "labels": ["no", "yes"], "logits": [-0.3034084141254425, -0.8552567958831787]}
+{"task_id": "original-adequacy-04-0", "labels": ["no", "yes"], "logits": [-0.44683679938316345, -0.08063182234764099]}
+{"task_id": "original-adequacy-04-1", "labels": ["no", "yes"], "logits": [-0.3467002809047699, -0.23320090770721436]}
+{"task_id": "original-adequacy-05-0", "labels": ["no", "yes"], "logits": [-0.8519810438156128, -1.3692200183868408]}
+{"task_id": "original-adequacy-05-1", "labels": ["no", "yes"], "logits": [-0.04325456917285919, -0.5940971970558167]}
+{"task_id": "original-adequacy-06-0", "labels": ["no", "yes"], "logits": [-0.8071677684783936, 0.03447822108864784]}
+{"task_id": "original-adequacy-06-1", "labels": ["no", "yes"], "logits": [0.6832456588745117, -0.0039416030049324036]}
+{"task_id": "original-routing-01-0", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-0.2342832386493683, -0.2670592665672302, -1.0901730060577393, -0.677225649356842, -0.24000442028045654, -0.6090828776359558]}
+{"task_id": "original-routing-01-1", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-1.1133332252502441, -0.12679004669189453, -1.425156831741333, -0.5849750638008118, -0.35413020849227905, -0.7789686918258667]}
+{"task_id": "original-routing-02-0", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.5833630561828613, -0.3004376292228699, -1.636498212814331, -1.77325439453125, -2.0974903106689453, -0.8004249334335327]}
+{"task_id": "original-routing-02-1", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.13130521774292, -0.153009295463562, -1.5911192893981934, -2.0821993350982666, -2.217485189437866, -0.4492061734199524]}
+{"task_id": "original-routing-03-0", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.691984176635742, -0.4781377911567688, -1.0423288345336914, -2.26598858833313, -1.86677885055542, -0.5867998600006104]}
+{"task_id": "original-routing-03-1", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.928483724594116, -0.4232161343097687, 0.5220999717712402, -2.412874937057495, -1.8254032135009766, -0.5120558738708496]}
+{"task_id": "original-routing-04-0", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.2086639404296875, -0.28720128536224365, -2.0777106285095215, 0.3427625894546509, -0.29596418142318726, -0.6121708750724792]}
+{"task_id": "original-routing-04-1", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.3745996952056885, -0.21570372581481934, -1.7019901275634766, 0.2839418053627014, -0.43945813179016113, -0.7320334315299988]}
+{"task_id": "original-routing-05-0", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.4458858966827393, 0.0032689571380615234, -1.5174603462219238, -0.6652642488479614, 0.9114020466804504, -0.9150816798210144]}
+{"task_id": "original-routing-05-1", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.8776321411132812, 0.07143664360046387, -1.4308719635009766, -0.6847407221794128, 0.35497578978538513, -0.531753659248352]}
+{"task_id": "original-routing-06-0", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.447329044342041, -0.3479499816894531, -1.7593674659729004, -1.5437533855438232, -1.1276304721832275, -0.33576202392578125]}
+{"task_id": "original-routing-06-1", "labels": ["math", "coding", "coding_agent", "document", "tools", "general"], "logits": [-2.9902524948120117, -0.7938248515129089, -2.7307868003845215, -1.7735767364501953, -1.1655893325805664, -0.5451831817626953]}
+{"task_id": "hard-opus-a-long_policy-01", "labels": ["deny_vacancy_exclusion", "deny_repeated_seepage", "pay_subject_to_10000_sublimit", "pay_subject_to_15000_sublimit", "pay_full_estimate_less_deductible"], "logits": [-2.17625093460083, -0.9846373200416565, -0.755520224571228, -0.748872697353363, -1.6419870853424072]}
+{"task_id": "hard-opus-a-long_policy-04", "labels": ["budget_holder", "department_head", "vp_and_finance_director", "cfo", "executive_committee"], "logits": [-1.46419095993042, -0.8153752684593201, -1.057807445526123, -0.4012104272842407, -1.343013048171997]}
+{"task_id": "hard-opus-a-long_policy-08", "labels": ["full_repair_no_charge", "parts_covered_labour_charged", "pro_rata_replacement_credit", "not_covered"], "logits": [-0.68511563539505, 0.32251328229904175, -2.2431721687316895, -1.1802897453308105]}
+{"task_id": "hard-opus-a-long_policy-09", "labels": ["no_license_required", "license_exception_lvs", "license_required", "shipment_prohibited"], "logits": [-1.1654479503631592, -0.25750160217285156, -0.36523669958114624, -1.4578185081481934]}
+{"task_id": "hard-opus-a-long_policy-11", "labels": ["no", "yes"], "logits": [-0.8040100336074829, 1.000828504562378]}
+{"task_id": "hard-opus-a-long_policy-13", "labels": ["no", "yes"], "logits": [-0.8833975791931152, -0.2942523956298828]}
+{"task_id": "hard-opus-a-long_policy-17", "labels": ["security_incident_response", "no_page_ticket_only", "database_oncall", "vendor_support", "platform_oncall"], "logits": [-1.7576162815093994, -2.129375457763672, -1.8102431297302246, -1.804619550704956, -2.7239367961883545]}
+{"task_id": "hard-opus-a-long_policy-19", "labels": ["no", "yes"], "logits": [1.1917810440063477, 0.8927183151245117]}
+{"task_id": "hard-opus-a-probability-03", "labels": ["no", "yes"], "logits": [-2.3862390518188477, 0.24412673711776733]}
+{"task_id": "hard-opus-a-probability-04", "labels": ["early", "on_time", "late"], "logits": [-0.5719533562660217, -0.28603649139404297, -0.9997392296791077]}
+{"task_id": "hard-opus-a-probability-07", "labels": ["resolved_first_contact", "escalated", "reopened"], "logits": [-0.5939953923225403, 0.06828215718269348, -1.4415574073791504]}
+{"task_id": "hard-opus-a-probability-08", "labels": ["no", "yes"], "logits": [0.1881239414215088, 0.43939009308815]}
+{"task_id": "hard-opus-a-temporal_numeric-03", "labels": ["no", "yes"], "logits": [0.1192283034324646, 0.40621376037597656]}
+{"task_id": "hard-opus-a-temporal_numeric-06", "labels": ["no", "yes"], "logits": [1.271611213684082, 0.7103357911109924]}
+{"task_id": "hard-opus-a-temporal_numeric-07", "labels": ["sep_24", "sep_25", "sep_26", "sep_27", "sep_28"], "logits": [-1.5412123203277588, -1.5355660915374756, -1.5428144931793213, -1.5942928791046143, -1.5459766387939453]}
+{"task_id": "hard-opus-a-temporal_numeric-09", "labels": ["no", "yes"], "logits": [-0.18816065788269043, 0.08857396245002747]}
+{"task_id": "hard-opus-a-temporal_numeric-12", "labels": ["0", "1", "2", "3"], "logits": [1.5821330547332764, 0.7031041979789734, 2.058433771133423, 2.1964120864868164]}
+{"task_id": "hard-opus-b-ambiguous-02", "labels": ["cannot_determine", "real_incident", "false_positive"], "logits": [-0.8665407299995422, -0.1346694380044937, -0.7383740544319153]}
+{"task_id": "hard-opus-b-ambiguous-03", "labels": ["within_limitation", "time_barred", "insufficient_information"], "logits": [-0.3973720669746399, -0.2079106569290161, -0.5297169089317322]}
+{"task_id": "hard-opus-b-ambiguous-07", "labels": ["within_policy", "over_limit", "insufficient_information"], "logits": [-0.1611514836549759, -0.35100916028022766, -1.0324161052703857]}
+{"task_id": "hard-opus-b-ambiguous-09", "labels": ["legitimate", "compromised", "inconclusive"], "logits": [-0.18828555941581726, -0.7133906483650208, -1.340500831604004]}
+{"task_id": "hard-opus-b-ambiguous-10", "labels": ["ask_user_which_alex", "send_to_alex_moreno", "send_to_alexandra_lind"], "logits": [-0.05410085618495941, -1.3963606357574463, -1.014838457107544]}
+{"task_id": "hard-opus-b-ambiguous-11", "labels": ["grade_correct", "grade_should_be_higher", "cannot_determine"], "logits": [-0.5218610167503357, -1.1321024894714355, -0.32928383350372314]}
+{"task_id": "hard-opus-b-ambiguous-13", "labels": ["cannot_determine", "charge_platform_team", "charge_data_team", "split_50_50"], "logits": [0.28910893201828003, -1.592642068862915, -1.492116928100586, -1.2817645072937012]}
+{"task_id": "hard-opus-b-multi_hop-03", "labels": ["tier1_team_lead", "tier2_department_head", "tier3_cfo", "tier4_board"], "logits": [-1.7985517978668213, -0.6770975589752197, -0.6390676498413086, -0.9285541772842407]}
+{"task_id": "hard-opus-b-multi_hop-04", "labels": ["no_page_ticket_only", "ana", "bjorn", "chen", "dmitri", "esra"], "logits": [-0.7356082201004028, -1.4331462383270264, -0.8529680371284485, -1.2679226398468018, -1.1210873126983643, -1.334313154220581]}
+{"task_id": "hard-opus-b-multi_hop-05", "labels": ["0", "1", "2", "3", "4"], "logits": [1.6590666770935059, -0.7553920149803162, 0.9421290755271912, 0.951691210269928, 1.1143467426300049]}
+{"task_id": "hard-opus-b-multi_hop-07", "labels": ["no_credit", "credit_10_percent", "credit_20_percent", "credit_25_percent", "credit_50_percent", "credit_full_month"], "logits": [-1.8510239124298096, -1.0062012672424316, -1.2741966247558594, -1.355534553527832, -1.3325726985931396, -1.9468944072723389]}
+{"task_id": "hard-opus-b-multi_hop-08", "labels": ["no", "yes"], "logits": [2.0705032348632812, 0.8666134476661682]}
+{"task_id": "hard-opus-b-probability-01", "labels": ["customer_wins", "merchant_wins", "customer_withdraws"], "logits": [-2.089812755584717, 0.3872547447681427, -1.8398621082305908]}
+{"task_id": "hard-opus-b-probability-02", "labels": ["bad_push", "upstream_provider", "database_hardware"], "logits": [-0.8829233050346375, -0.2206750512123108, -0.5436354279518127]}
+{"task_id": "hard-opus-b-probability-03", "labels": ["no", "yes"], "logits": [-0.5763200521469116, 0.36210113763809204]}
+{"task_id": "hard-opus-b-probability-04", "labels": ["no_show", "late_cancellation", "attended"], "logits": [-0.7648823857307434, -0.46061915159225464, 0.48475950956344604]}
+{"task_id": "hard-opus-b-probability-06", "labels": ["overturned", "modified", "upheld"], "logits": [0.0006550103425979614, -0.704766035079956, 0.2928042411804199]}
+{"task_id": "hard-opus-b-tradeoff-01", "labels": ["escalate_to_security", "page_oncall", "escalate_to_engineering", "process_refund", "send_kb_article"], "logits": [-2.1392722129821777, -2.0157198905944824, -0.8119595646858215, -1.0303454399108887, -1.9096121788024902]}
+{"task_id": "hard-opus-b-tradeoff-03", "labels": ["order_a", "order_b", "order_c", "order_d"], "logits": [-1.9701931476593018, 0.1135423481464386, -0.4625326991081238, -0.8756523728370667]}
+{"task_id": "hard-opus-b-tradeoff-06", "labels": ["no", "yes"], "logits": [0.4434003531932831, 0.04204801470041275]}
+{"task_id": "hard-opus-b-tradeoff-07", "labels": ["out_of_scope", "p3_backlog", "p2_fix_30d", "p1_fix_7d", "p0_fix_24h"], "logits": [-1.5025420188903809, -1.3888287544250488, -0.6868416666984558, -0.4259437918663025, -0.7543331384658813]}
+{"task_id": "hard-opus-b-tradeoff-08", "labels": ["no", "yes"], "logits": [-0.7430077195167542, 0.3264089822769165]}
+{"task_id": "hard-opus-b-tradeoff-12", "labels": ["wait_for_inspection", "refund_now", "offer_store_credit", "escalate_to_fraud_team", "deny_refund"], "logits": [-1.5353317260742188, -1.1316583156585693, -2.5807833671569824, -3.1874606609344482, -2.2448296546936035]}
+{"task_id": "hard-opus-c-long_policy-02", "labels": ["erase_all", "restrict_all_pending_legal_hold", "erase_but_retain_transaction_records", "reject_unverified_request", "erase_marketing_only"], "logits": [-0.7292780876159668, -0.2619095742702484, -0.6533747315406799, -1.0146501064300537, -1.266374111175537]}
+{"task_id": "hard-opus-c-long_policy-03", "labels": ["eur_0", "eur_150", "eur_200", "eur_300", "eur_400", "eur_600"], "logits": [-1.9053046703338623, -1.0991103649139404, -0.9675984978675842, -1.0002634525299072, -0.980040967464447, -0.9431625604629517]}
+{"task_id": "hard-opus-c-long_policy-04", "labels": ["no", "yes"], "logits": [-1.2826673984527588, -0.004586927592754364]}
+{"task_id": "hard-opus-c-long_policy-05", "labels": ["0", "1", "2", "3"], "logits": [0.421627014875412, -0.6585466861724854, 1.8304235935211182, 1.818739652633667]}
+{"task_id": "hard-opus-c-long_policy-08", "labels": ["0", "1", "2", "3"], "logits": [-1.5928115844726562, -0.029839470982551575, 1.5619289875030518, 1.4333431720733643]}
+{"task_id": "hard-opus-c-long_policy-10", "labels": ["full_credit", "credit_minus_restocking_fee", "repair_or_replace_only", "reject_return"], "logits": [-1.6352190971374512, -0.8785784840583801, -1.5817985534667969, -1.6003997325897217]}
+{"task_id": "hard-opus-c-long_policy-11", "labels": ["no", "yes"], "logits": [-0.02433142066001892, -0.16819824278354645]}
+{"task_id": "hard-opus-c-probability-03", "labels": ["halvorsen_polymer", "ortega_seal_works", "kuznets_technik"], "logits": [-1.3416376113891602, -0.2996738851070404, -0.8698842525482178]}
+{"task_id": "hard-opus-c-temporal_numeric-02", "labels": ["no", "yes"], "logits": [0.45309820771217346, 0.10116156935691833]}
+{"task_id": "hard-opus-c-temporal_numeric-03", "labels": ["eur_692_00", "eur_617_00", "eur_688_00", "eur_693_90", "eur_812_00"], "logits": [-2.0740480422973633, -1.9952921867370605, -2.118417739868164, -1.8845088481903076, -2.1370818614959717]}
+{"task_id": "hard-opus-c-temporal_numeric-04", "labels": ["usd_2222_50", "usd_2303_01", "usd_2303_33", "usd_2335_00", "usd_2340_00"], "logits": [-1.130319595336914, -0.8673037886619568, -0.9170871376991272, -0.6083405017852783, -0.8290655016899109]}
+{"task_id": "hard-opus-c-temporal_numeric-06", "labels": ["sep_15_office_chair", "sep_16_taxi", "sep_17_parking", "sep_18_book_set", "sep_21_client_dinner", "none_declined"], "logits": [-0.8207281231880188, -0.9920656085014343, -0.7175951600074768, -0.6775578856468201, -0.8694165945053101, -1.711113691329956]}
+{"task_id": "hard-opus-c-temporal_numeric-08", "labels": ["eur_506_06", "eur_498_81", "eur_513_69", "eur_497_40", "eur_532_01"], "logits": [-0.9348927140235901, -1.063460111618042, -1.0238943099975586, -1.1035408973693848, -1.0692873001098633]}
+{"task_id": "hard-opus-c-temporal_numeric-12", "labels": ["covered", "expired_24_month_term", "expired_30_month_cap"], "logits": [-1.7543706893920898, -1.0811188220977783, -0.1545613557100296]}
+{"task_id": "hard-sol-a-adversarial-01", "labels": ["grant_access", "deny_missing_approval", "deny_inactive_user", "grant_owner_exception"], "logits": [-1.2403619289398193, -2.23367977142334, -2.0389511585235596, -1.0735526084899902]}
+{"task_id": "hard-sol-a-adversarial-06", "labels": ["no", "yes"], "logits": [1.467160701751709, 0.6723802089691162]}
+{"task_id": "hard-sol-a-adversarial-07", "labels": ["retain_until_2031", "delete_now", "retain_indefinitely", "needs_signature_review"], "logits": [0.11393958330154419, -1.6229050159454346, -1.6676223278045654, -1.7604875564575195]}
+{"task_id": "hard-sol-a-adversarial-08", "labels": ["no", "yes"], "logits": [0.9020829200744629, 0.6751711964607239]}
+{"task_id": "hard-sol-a-adversarial-09", "labels": ["0", "1", "2", "3"], "logits": [-2.252507209777832, -1.8157439231872559, -0.9760362505912781, -1.5024051666259766]}
+{"task_id": "hard-sol-a-adversarial-11", "labels": ["standard_research", "ethics_review", "major_grants", "manual_hold"], "logits": [-0.9021973013877869, -1.761387825012207, -0.8998304009437561, -0.8812513947486877]}
+{"task_id": "hard-sol-a-multi_hop-01", "labels": ["reject_tier", "accept_s2_dusk", "reject_cutoff", "reroute_s3"], "logits": [-1.326418399810791, -0.35670530796051025, -1.3773751258850098, -1.0311343669891357]}
+{"task_id": "hard-sol-a-multi_hop-02", "labels": ["heron_q2", "insufficient_information", "security_primary", "executive_bridge"], "logits": [-0.08813777565956116, -1.856395959854126, -0.0003228038549423218, -0.7313079237937927]}
+{"task_id": "hard-sol-a-multi_hop-05", "labels": ["pay_manager_approved", "require_finance_board", "reject_category", "require_director"], "logits": [-1.097226858139038, -1.5504624843597412, -1.8143272399902344, -0.9840173125267029]}
+{"task_id": "hard-sol-a-multi_hop-07", "labels": ["manual_equivalency", "deny_score", "admit", "deny_prerequisite"], "logits": [-2.023247480392456, -1.3943936824798584, 0.7941000461578369, -1.2474424839019775]}
+{"task_id": "hard-sol-a-multi_hop-08", "labels": ["safety_shutdown", "local_maintenance", "insufficient_log", "central_engineering"], "logits": [-0.39596912264823914, -0.12147262692451477, -2.2003283500671387, 0.009468451142311096]}
+{"task_id": "hard-sol-a-multi_hop-09", "labels": ["confirm_l3", "require_steward", "switch_l4", "reject_capacity"], "logits": [-0.7691521048545837, -0.15253162384033203, -1.3848283290863037, -1.2719054222106934]}
+{"task_id": "hard-sol-a-multi_hop-10", "labels": ["deny_sensitive", "needs_field_review", "reduce_to_30_days", "approve_45_days"], "logits": [-0.628487229347229, -1.4947965145111084, -1.1581885814666748, -1.0221097469329834]}
+{"task_id": "hard-sol-a-multi_hop-12", "labels": ["wrong_issue_class", "expired", "covered_recurrence", "needs_authentication"], "logits": [-1.4264981746673584, -0.7129086852073669, -0.8319365382194519, -0.038769952952861786]}
+{"task_id": "hard-sol-a-trap-02", "labels": ["no", "yes"], "logits": [1.037853479385376, -0.2088017463684082]}
+{"task_id": "hard-sol-a-trap-04", "labels": ["no", "yes"], "logits": [1.0030925273895264, -0.6745374798774719]}
+{"task_id": "hard-sol-a-trap-05", "labels": ["0", "1", "2", "3"], "logits": [-2.0318191051483154, -2.3505043983459473, -1.190979242324829, -0.9507231116294861]}
+{"task_id": "hard-sol-a-trap-06", "labels": ["close_confirmed", "keep_open_unresolved", "close_agent_verified", "await_internal_metrics"], "logits": [-2.199997901916504, -2.1037464141845703, -2.1148037910461426, -1.8696327209472656]}
+{"task_id": "hard-sol-a-trap-08", "labels": ["on_time", "late", "indeterminate", "canceled"], "logits": [-0.21489661931991577, -0.16956281661987305, -0.9115431308746338, -2.3400049209594727]}
+{"task_id": "hard-sol-a-trap-10", "labels": ["ready_one_review", "ready_two_reviews", "blocked_second_review", "blocked_failed_test"], "logits": [-2.010849714279175, -1.3626413345336914, -0.2097437083721161, -0.5192323923110962]}
+{"task_id": "hard-sol-a-trap-13", "labels": ["no", "yes"], "logits": [0.9577905535697937, -0.4400523900985718]}
+{"task_id": "hard-sol-a-trap-15", "labels": ["no", "yes"], "logits": [0.7436454892158508, 0.07200008630752563]}
+{"task_id": "hard-sol-b-judge_hard-01", "labels": ["no", "yes"], "logits": [-0.35580694675445557, -0.2232699990272522]}
+{"task_id": "hard-sol-b-judge_hard-02", "labels": ["no", "yes"], "logits": [-0.012409329414367676, -0.18068449199199677]}
+{"task_id": "hard-sol-b-judge_hard-05", "labels": ["no", "yes"], "logits": [-0.06313593685626984, -0.24008628726005554]}
+{"task_id": "hard-sol-b-judge_hard-08", "labels": ["no", "yes"], "logits": [-0.1582576185464859, -0.2390000820159912]}
+{"task_id": "hard-sol-b-judge_hard-10", "labels": ["no", "yes"], "logits": [0.04472005367279053, -0.21132996678352356]}
+{"task_id": "hard-sol-b-judge_hard-14", "labels": ["no", "yes"], "logits": [-0.23674830794334412, -0.4126371741294861]}
+{"task_id": "hard-sol-b-judge_hard-15", "labels": ["no", "yes"], "logits": [-0.0965936928987503, -0.1973000019788742]}
+{"task_id": "hard-sol-b-judge_hard-18", "labels": ["no", "yes"], "logits": [0.7188824415206909, 0.11490549147129059]}
+{"task_id": "hard-sol-b-long_policy-01", "labels": ["approve_all", "approve_meals_only", "approve_lodging_only", "reject_entire_claim"], "logits": [-1.758955717086792, -1.3278157711029053, -1.5680060386657715, -1.2722039222717285]}
+{"task_id": "hard-sol-b-long_policy-02", "labels": ["analytics_owner_only", "privacy_only", "privacy_and_security", "deny_current_export"], "logits": [-1.818225622177124, -2.325789451599121, -1.6808278560638428, -0.7048191428184509]}
+{"task_id": "hard-sol-b-long_policy-05", "labels": ["delete_everything", "delete_profile_omar_april_and_table", "delete_only_profile", "delete_nothing"], "logits": [-1.8061609268188477, -0.32849472761154175, -1.400848388671875, -1.607121229171753]}
+{"task_id": "hard-sol-b-long_policy-06", "labels": ["harbor_neighbors", "east_ward", "river_arts", "no_award"], "logits": [-1.3733971118927002, -0.9017198085784912, -1.2717368602752686, -1.8084101676940918]}
+{"task_id": "hard-sol-b-routing_hard-01", "labels": ["spreadsheet_formula", "office_file_repair", "data_pipeline", "desktop_support", "finance_review"], "logits": [-0.7540671229362488, -0.3002907633781433, -2.450089454650879, -2.034139633178711, -1.8727166652679443]}
+{"task_id": "hard-sol-b-routing_hard-02", "labels": ["payment_disputes", "ledger_reconciliation", "mobile_app", "customer_support", "fraud_review"], "logits": [-1.0547118186950684, 0.4205365777015686, -1.092165231704712, -1.9938406944274902, -1.7476131916046143]}
+{"task_id": "hard-sol-b-routing_hard-03", "labels": ["authoritative_dns", "network_dns", "tls_certificates", "api_platform", "endpoint_devices"], "logits": [-0.7033020257949829, -0.15541645884513855, -1.354102373123169, -1.1135199069976807, -0.38979992270469666]}
+{"task_id": "hard-sol-b-routing_hard-07", "labels": ["code_signing", "release_notarization", "macos_runtime", "ci_infrastructure", "endpoint_security"], "logits": [-0.8194566965103149, -0.013012126088142395, -1.3639376163482666, -2.2224578857421875, -1.2423036098480225]}
+{"task_id": "hard-sol-b-routing_hard-09", "labels": ["vpn_network", "source_access", "git_client", "repository_admin", "identity_login"], "logits": [-1.3172402381896973, 0.14096075296401978, -1.152665138244629, -0.5964652895927429, -1.291619062423706]}
+{"task_id": "hard-sol-b-temporal_numeric-01", "labels": ["before_open", "within_window", "late_by_under_2h", "late_by_2h_or_more"], "logits": [-1.8925237655639648, -0.7947941422462463, -0.3843276798725128, -0.13096371293067932]}
+{"task_id": "hard-sol-b-temporal_numeric-02", "labels": ["at_least_100gb_below", "under_100gb_below", "exactly_equal", "over_limit"], "logits": [-0.7692822813987732, -0.9908741116523743, -1.187730073928833, -0.24040019512176514]}
+{"task_id": "hard-sol-b-temporal_numeric-03", "labels": ["6_credits", "9_credits", "12_credits", "15_credits"], "logits": [-0.6708030104637146, -0.6883023977279663, -0.6374401450157166, -0.6693968176841736]}
+{"task_id": "hard-sol-b-temporal_numeric-04", "labels": ["pass", "narrow_fail", "clear_fail"], "logits": [-1.0044915676116943, -0.8734994530677795, -1.0652422904968262]}
+{"task_id": "hard-sol-c-judge_hard-03", "labels": ["no", "yes"], "logits": [0.25115299224853516, -0.21214914321899414]}
+{"task_id": "hard-sol-c-judge_hard-05", "labels": ["no", "yes"], "logits": [0.3141805827617645, -0.026606105268001556]}
+{"task_id": "hard-sol-c-judge_hard-07", "labels": ["no", "yes"], "logits": [0.1872032880783081, -0.22437381744384766]}
+{"task_id": "hard-sol-c-judge_hard-08", "labels": ["no", "yes"], "logits": [0.3838697671890259, -0.33223986625671387]}
+{"task_id": "hard-sol-c-judge_hard-09", "labels": ["no", "yes"], "logits": [0.42832186818122864, -0.23860013484954834]}
+{"task_id": "hard-sol-c-judge_hard-10", "labels": ["no", "yes"], "logits": [0.35972142219543457, -0.4713335633277893]}
+{"task_id": "hard-sol-c-judge_hard-11", "labels": ["no", "yes"], "logits": [0.3603099584579468, -0.24025577306747437]}
+{"task_id": "hard-sol-c-judge_hard-13", "labels": ["no", "yes"], "logits": [0.5114185810089111, -0.0446595773100853]}
+{"task_id": "hard-sol-c-judge_hard-15", "labels": ["no", "yes"], "logits": [-0.15485116839408875, -0.308793842792511]}
+{"task_id": "hard-sol-c-multi_hop-07", "labels": ["reject_draw", "release_draw", "partial_release", "programme_review"], "logits": [-1.118290662765503, -0.9570779204368591, -1.0996620655059814, 0.22753219306468964]}
+{"task_id": "hard-sol-c-multi_hop-09", "labels": ["bus_substitution", "call_fen_cross", "pass_fen_cross", "terminate_oakmere"], "logits": [-0.5084738731384277, -0.882114052772522, -0.7850494384765625, -0.5308334231376648]}
+{"task_id": "hard-sol-c-multi_hop-11", "labels": ["documentation_needed", "coverage_confirmed", "coverage_excluded", "adjuster_referral"], "logits": [-1.5495831966400146, -1.4141173362731934, -1.1677517890930176, -1.3111934661865234]}
+{"task_id": "hard-sol-c-multi_hop-12", "labels": ["digital_copy_only", "conservation_hold", "deny_request", "supervised_delivery"], "logits": [-1.2388825416564941, -1.0140314102172852, -1.2611031532287598, -1.0333127975463867]}
+{"task_id": "hard-sol-c-multi_hop-13", "labels": ["scrap_lot", "normal_release", "rework", "engineering_review"], "logits": [-1.3194341659545898, -1.2100844383239746, -1.646193504333496, -0.8798962831497192]}

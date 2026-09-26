@@ -220,6 +220,18 @@ class GavelLocalAdapter:
                 self._pc_stats["cached_tokens"] += cached_tokens
                 self._pc_stats["naive_tokens"] += naive_tokens
             res.latency_s = time.perf_counter() - t0
+            # Optional raw-logit dump, for refitting temperature / the
+            # meta-calibrator against this exact precision. Set
+            # GAVEL_DUMP_LOGITS=<path> to append one JSON line per decision.
+            _dump = os.environ.get("GAVEL_DUMP_LOGITS")
+            if _dump:
+                try:
+                    with open(_dump, "a", encoding="utf-8") as _f:
+                        _f.write(json.dumps({"task_id": task.id,
+                                             "labels": [lab for lab, _ in opts],
+                                             "logits": [float(v) for v in lg]}) + "\n")
+                except Exception:
+                    pass
             m = max(v / self.temp for v in lg)
             ex = [math.exp(v / self.temp - m) for v in lg]
             s = sum(ex)

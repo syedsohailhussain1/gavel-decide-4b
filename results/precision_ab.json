@@ -1,0 +1,64 @@
+{
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb",
+  "mem_gib": 23.625,
+  "bf16": {
+    "fixed_ms": 11.886298583704047,
+    "ms_per_token": 0.12764945994413504,
+    "points": [
+      [
+        128,
+        40.1589460670948
+      ],
+      [
+        256,
+        44.357368955388665
+      ],
+      [
+        512,
+        71.94831396918744
+      ],
+      [
+        1024,
+        128.5283489851281
+      ],
+      [
+        2048,
+        280.95157200004905
+      ]
+    ],
+    "tok_per_s_512": 6628.447618112602,
+    "ms_at_512": 77.24282207510119
+  },
+  "nf4": {
+    "fixed_ms": 21.004928057664074,
+    "ms_per_token": 0.22589503164234034,
+    "points": [
+      [
+        128,
+        55.134112015366554
+      ],
+      [
+        256,
+        81.53005794156343
+      ],
+      [
+        512,
+        133.1279049627483
+      ],
+      [
+        1024,
+        243.12894395552576
+      ],
+      [
+        2048,
+        488.4551069699228
+      ]
+    ],
+    "tok_per_s_512": 3746.4369265052933,
+    "ms_at_512": 136.66318425854234
+  },
+  "hidden_max_abs_diff": 18.0,
+  "hidden_rel_diff": 0.2535211267605634,
+  "speedup_bf16_over_nf4": 1.7692671058246459,
+  "note": "tok_per_s_512 recomputed from the stored fit. The pod run's summary block had a units bug (1000/ms instead of n/(ms/1000)); the raw per-length timings were always correct."
+}
