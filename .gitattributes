@@ -1,0 +1,7 @@
+# Shell scripts must be LF. Windows checkouts default to CRLF, which breaks
+# `bash script.sh` on Linux ("\r: command not found") and shebang lines.
+*.sh text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.md text eol=lf
