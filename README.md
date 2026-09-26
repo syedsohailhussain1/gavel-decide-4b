@@ -1,4 +1,4 @@
-# Gavel-Decide 4B — JevBench v1.4.2 submission
+﻿# Gavel-Decide 4B — JevBench v1.4.2 submission
 
 A typed decision system for TypeSafe-compatible `/v1/systemone`: a frozen
 `Qwen3-4B-Base` trunk with a trained pairwise scoring head, temperature
@@ -128,7 +128,7 @@ the operator can substitute.
   model outputs (Jev, DeepSeek, or otherwise) were used as training targets.
   An earlier third-party probe script was removed from the repository and is
   not part of this submission.
-- Head weights: [`syedsohailhussain/gavel-decide-4b`](https://huggingface.co/syedsohailhussain/gavel-decide-4b) (`combined_head.pt`).
+- Head weights: [`syedsohailhussain/gavel-decide-4b`](https://huggingface.co/syedsohailhussain/gavel-decide-4b) (`v1/combined_head.pt` - carries the meta-calibrator; `head/pair_head.pt` is a stale pre-calibration version and must not be used).
 
 ## Layout
 
@@ -147,3 +147,4 @@ MODEL_CARD.md            system card, intended use, limitations
 
 See [REPRODUCE.md](REPRODUCE.md). The head is small; the trunk is pulled from
 Hugging Face at a pinned revision recorded in `results/axes.json`.
+

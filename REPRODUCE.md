@@ -1,4 +1,4 @@
-# Reproducing this entry
+﻿# Reproducing this entry
 
 ## 1. Environment
 
@@ -19,8 +19,9 @@ The trunk is public and unmodified:
 
 ```
 huggingface-cli download Qwen/Qwen3-4B-Base --local-dir models/qwen3-4b
-huggingface-cli download syedsohailhussain/gavel-decide-4b \
-    combined_head.pt --local-dir models/head
+huggingface-cli download syedsohailhussain/gavel-decide-4b --local-dir models/head
+#   -> models/head/v1/combined_head.pt   (NOT head/pair_head.pt, which is a
+#      stale pre-calibration version with no meta_cal and T=2.796)
 ```
 
 `combined_head.pt` is a single dict containing the head `state_dict` under
@@ -91,3 +92,4 @@ available; 4-bit is forced there because 8.04GB of bf16 weights do not fit in
 4GB. Throughput on that card is dominated by 4-bit dequantisation, so the
 latency and cost figures in this repo are **not** representative of bf16
 inference on adequate VRAM. The operator's own measurement governs.
+

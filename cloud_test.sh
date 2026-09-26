@@ -25,13 +25,21 @@ pip install -q bitsandbytes accelerate 2>&1 | tail -2
 
 echo "=== [3/6] weights ==="
 python - <<'PY'
-import os
+import os, torch
 from huggingface_hub import snapshot_download, hf_hub_download
 t = snapshot_download("Qwen/Qwen3-4B-Base",
                       allow_patterns=["*.json", "*.safetensors", "*.txt"])
 print("TRUNK", t)
-h = hf_hub_download("syedsohailhussain/gavel-decide-4b", "combined_head.pt")
+# NOTE: there is no root combined_head.pt. v1/ carries the meta-calibrator
+# (features c/margin/ent/kopts, T=2.4453...). head/pair_head.pt is a stale
+# earlier version with no meta_cal and T=2.796 - do NOT use it.
+h = hf_hub_download("syedsohailhussain/gavel-decide-4b", "v1/combined_head.pt")
+d = torch.load(h, map_location="cpu", weights_only=False)
+assert "meta_cal" in d, "head has no meta_cal - wrong file?"
+assert abs(float(d["temperature"]) - 2.445309294661667) < 1e-9, \
+    f"unexpected temperature {d['temperature']}"
 print("HEAD", h)
+print("  temperature", d["temperature"], "features", d["meta_cal"]["feats"])
 with open("env.sh", "w") as f:
     f.write(f'export TRUNK="{t}"\nexport HEAD="{h}"\n')
 PY
