@@ -1,0 +1,42 @@
+[
+  {
+    "name": "tiny_snake_gtiny20",
+    "params": 4386436,
+    "labels": 4,
+    "mib": 17.417292594909668,
+    "ms": 1.5007528999703936,
+    "decisions_per_s": 666.3322123313756
+  },
+  {
+    "name": "tiny_snake_gtiny",
+    "params": 4386436,
+    "labels": 4,
+    "mib": 17.417292594909668,
+    "ms": 1.4991566499811597,
+    "decisions_per_s": 667.0416997533695
+  },
+  {
+    "name": "tiny_snake3_gtiny",
+    "params": 4386436,
+    "labels": 4,
+    "mib": 17.417292594909668,
+    "ms": 1.5121565000154078,
+    "decisions_per_s": 661.3072125734411
+  },
+  {
+    "name": "tiny_snake2_bert11m",
+    "params": 11171588,
+    "labels": 4,
+    "mib": 43.30413341522217,
+    "ms": 3.389632900012657,
+    "decisions_per_s": 295.01719787894024
+  },
+  {
+    "name": "tiny_snake_distil",
+    "params": 66956548,
+    "labels": 4,
+    "mib": 256.1107702255249,
+    "ms": 17.797069199965335,
+    "decisions_per_s": 56.18902689898783
+  }
+]
