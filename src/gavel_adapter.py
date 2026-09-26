@@ -49,12 +49,17 @@ class GavelLocalAdapter:
 
     def __init__(self, endpoint=None, model=None, key_env="", timeout_s=None,
                  price_input_per_m=None, price_output_per_m=None, threads=4,
-                 revision=None, head=None, ctx=512):
+                 revision=None, head=None, ctx=512, dtype="nf4"):
         self.trunk = endpoint or r"D:\gavel\models\qwen3-4b"
         self.model = model or "gavel-decide-4b"
         self.head_path = head or (r"D:\gavel\models\training_state"
                                   r"\combined_head.pt")
         self.ctx = ctx
+        # "nf4" reproduces the published 4-bit numbers and is the only option
+        # that fits <8GB VRAM. "bf16" is the honest default on adequate VRAM
+        # and is materially faster (bitsandbytes dequantisation, not the
+        # model, dominates nf4 throughput).
+        self.dtype = dtype
         # Shared-prefix KV cache: every option of an item shares the
         # `State: ...\nQuestion: ...\nOption: ` token prefix, so its K/V is
         # computed once instead of once per option. Verified 36/36 identical
@@ -83,12 +88,16 @@ class GavelLocalAdapter:
         if self.tok.pad_token_id is None:
             self.tok.pad_token = self.tok.eos_token
         dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if dev.type == "cuda":
+        if dev.type == "cuda" and self.dtype == "nf4":
             bnb = BitsAndBytesConfig(
                 load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16,
                 bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True)
             self.lm = AutoModelForCausalLM.from_pretrained(
                 self.trunk, quantization_config=bnb, device_map="auto",
+                trust_remote_code=False).eval()
+        elif dev.type == "cuda":
+            self.lm = AutoModelForCausalLM.from_pretrained(
+                self.trunk, dtype=torch.bfloat16, device_map={"": 0},
                 trust_remote_code=False).eval()
         else:
             self.lm = AutoModelForCausalLM.from_pretrained(
@@ -106,7 +115,7 @@ class GavelLocalAdapter:
         # together), fall back to a meta_cal.json sidecar beside it.
         self.meta, self._meta_fn = None, None
         try:
-            from m2 import meta_rescale as _mr
+            from gavel_meta import meta_rescale as _mr
 
             meta = hp.get("meta_cal")
             if meta is None:
