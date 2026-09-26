@@ -1,0 +1,64 @@
+{
+  "results": [
+    {
+      "acc": 0.6549707602339182,
+      "readout": "last_L-16"
+    },
+    {
+      "acc": 0.6198830409356726,
+      "readout": "last_mid"
+    },
+    {
+      "acc": 0.5789473684210527,
+      "readout": "last_L-4"
+    },
+    {
+      "acc": 0.5730994152046783,
+      "readout": "last_L-8"
+    },
+    {
+      "acc": 0.48538011695906436,
+      "readout": "last_L0+last_L-8"
+    },
+    {
+      "acc": 0.47368421052631576,
+      "readout": "mean_L-8"
+    },
+    {
+      "acc": 0.45029239766081874,
+      "readout": "ALL8"
+    },
+    {
+      "acc": 0.43274853801169594,
+      "readout": "last_L0+last_L-8+mean_L0"
+    },
+    {
+      "acc": 0.391812865497076,
+      "readout": "last_L0+last_L-8+mean_L0+max_L0"
+    },
+    {
+      "acc": 0.3742690058479532,
+      "readout": "last_L0+mean_L0+max_L0"
+    },
+    {
+      "acc": 0.3391812865497076,
+      "readout": "max_L0"
+    },
+    {
+      "acc": 0.3274853801169591,
+      "readout": "last_L0+mean_L0"
+    },
+    {
+      "acc": 0.3099415204678363,
+      "readout": "mean_L0"
+    },
+    {
+      "acc": 0.2923976608187135,
+      "readout": "last_L0+mean_L-8"
+    },
+    {
+      "acc": 0.2923976608187135,
+      "readout": "last_L0 (SHIPPED)"
+    }
+  ]
+}
