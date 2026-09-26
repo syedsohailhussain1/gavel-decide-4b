@@ -1,0 +1,5 @@
+﻿__pycache__/
+*.pyc
+results/ro_*.pt
+results/readouts_*.pt
+results/pair_ro.pt
