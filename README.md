@@ -147,6 +147,43 @@ score.
   multiplies forward passes on long items, spending the one axis already
   nearest a scoring gate to buy points on an axis that is capped.
 
+## What we tested and rejected
+
+Recorded because negative results are part of the submission.
+
+**Reading an intermediate layer instead of the final one.** The head reads one
+vector — the last token of the final layer (L36). Since the forward pass
+computes all 37 hidden states anyway, reading a different one is free, so we
+swept every depth at three context lengths. On the production recipe the
+shipped read-out **wins**:
+
+| read-out | item acc | hard | best epoch |
+|---|---|---|---|
+| **last_L36 (shipped)** | **0.8404** | **0.771** | 33 |
+| last_L20 | 0.7465 | 0.629 | 14 |
+| last_L21 | 0.7277 | 0.600 | 14 |
+
+An earlier pass appeared to show the opposite (L20 more than doubling L36) and
+that result was **wrong** — it was produced by a harness in which L36 could not
+train properly while L20 could, so it measured trainability rather than read-out
+quality. Three defects, each now behind a gate: scrambled features from a
+swapped tuple unpack in the row permutation, a guessed training recipe, and
+dropping the 1,720 NLI rows the real split includes. `FINDINGS_readout_layer.md`
+keeps both results. No change to the shipped system is warranted.
+
+**Ensembling the context views.** Errors across ctx 512/1024/2048 are 79–91%
+correlated (Jaccard), so the views make the same ~56–65 mistakes and there is
+no ensemble headroom.
+
+**Longer context.** Best read-out scores 0.655 / 0.643 / 0.661 at ctx
+512 / 1024 / 2048 — flat within noise. Consistent with the field: `certo`
+truncates state to 64 tokens and still competes, and `decider-4b v2` uses 32k yet
+scores 0.676 on the public hard tier against our 0.685.
+
+**One thing did survive:** with the read-out held at L36, head features cached
+in **bf16** score 0.8404 against 0.8028 for the shipped 4-bit cache. That is 4
+items out of 213, inside the noise band, so it is unconfirmed and not shipped.
+
 ## Cost
 
 `composite_v13.cost` raises on a missing or non-positive price, so a positive
