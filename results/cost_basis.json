@@ -1,0 +1,33 @@
+{
+  "declared_basis": "energy + capital, 24/7 dedicated",
+  "usd_per_1000_decisions": 0.038599407584982245,
+  "cost_axis": 52.40258082193095,
+  "gate_multiplier": 1.0984121907196018,
+  "measured_gpu_watts": 25.2,
+  "measured_tokens_per_decision": 721.3,
+  "hardware_usd": 880.0,
+  "lifetime_years": 4.0,
+  "electricity_usd_per_kwh": 0.15,
+  "sensitivity": {
+    "energy only (marginal)": {
+      "usd_per_1000": 0.013017850000000001,
+      "cost_axis": 66.5638221095291
+    },
+    "energy + capital, 24/7 dedicated": {
+      "usd_per_1000": 0.038599407584982245,
+      "cost_axis": 52.40258082193095
+    },
+    "energy + capital, 12h/day": {
+      "usd_per_1000": 0.0641809651699645,
+      "cost_axis": 45.77781268475772
+    },
+    "energy + capital, 8h/day": {
+      "usd_per_1000": 0.08976252275494671,
+      "cost_axis": 41.40714850511189
+    },
+    "energy + capital, 6h/day": {
+      "usd_per_1000": 0.11534408033992896,
+      "cost_axis": 38.14014067971534
+    }
+  }
+}
