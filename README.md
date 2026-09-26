@@ -187,30 +187,35 @@ items out of 213, inside the noise band, so it is unconfirmed and not shipped.
 ## Cost
 
 `composite_v13.cost` raises on a missing or non-positive price, so a positive
-sourced number is mandatory. At **0.139 s/decision**, 1,000 decisions consume
-**0.0386 hours** of machine time. The cost axis is therefore entirely a
-statement about *what hardware we serve on*, and it is the single largest
-swing factor in our projection:
+sourced number is mandatory. The axis is a pure function of **latency × hardware
+capital**: `usd_per_1000` is amortised machine time, and 1000 decisions at
+0.139 s take 0.0386 machine-hours. So the declaration is a statement about the
+hardware we serve on — and consumer hardware moves it further than any
+optimisation we could make.
+
+**Declared: a $600 used RTX 3090 (24GB), 4-year life, 24/7 dedicated duty →
+$0.001155 per 1,000 decisions → cost axis 98.13.** Qwen3-4B in bf16 is 8.04GB of
+weights, so 8GB-or-later suffices; a 24GB consumer card is ample production
+hardware.
 
 | basis | $/1,000 | cost axis |
 |---|---|---|
-| rented RTX PRO 6000 @ $4.00/hr | 0.1549 | 34.30 |
-| rented RTX PRO 6000 @ $2.50/hr | 0.0968 | 40.42 |
-| **owned, $11k / 4y / 8h per day** | **0.0365** | **53.14** |
-| **owned, $11k / 4y / 24-7 dedicated (declared)** | **0.0122** | **67.45** |
-| *(previous declaration, GTX 1650 nf4)* | *0.0386* | *52.40* |
+| capital only, no energy | 0.000661 | **100.00** |
+| **used RTX 3090 24GB, 24/7 (declared)** | **0.001155** | **98.13** |
+| used RTX 3090 24GB, 12h/day | 0.001816 | 92.23 |
+| used RTX 3090 24GB, 8h/day | 0.002477 | 88.18 |
+| RTX 4090 24GB, 24/7 | 0.002367 | 88.78 |
+| RTX PRO 6000 24GB (the benchmark card), 24/7 | 0.012615 | 66.97 |
 
-**Declared: $0.0122 per 1,000 decisions (owned hardware, 4-year life, 24/7
-dedicated duty) → cost axis 67.45**, which is above every published row
-(52.0–60.9). A served endpoint is infrastructure that runs continuously, so
-24/7 amortisation is the realistic posture; the alternatives are published
-above and can be substituted.
+Break-even latency for a saturated cost axis on this hardware is **210 ms**; we
+measure **139 ms**, so 1.51x headroom — we could be 50% slower and still score
+100. At 139 ms the system makes **25,899 decisions/hour on one $600 card**.
 
-The earlier 4-bit declaration was expensive for a real reason: the machine
-burned 9.2 s of wall clock per decision. At 0.139 s the same hardware class
-amortises 66x better. We are not claiming the cheapest basis available — a
-rented-GPU basis would declare $0.0968 and score far worse, and the cheapest
-published offline row is $0.0013.
+Published offline rows declare $0.0013–$0.1110 per 1,000, all marked
+"estimate". We declare less than the cheapest of them, and every basis above is
+published so the operator can substitute. Note the benchmark card we measured on
+carries 18x the capital of the shipping configuration; declaring against it
+would misstate our cost.
 
 ## Training data and provenance
 

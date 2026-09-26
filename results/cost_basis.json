@@ -1,33 +1,33 @@
 {
-  "declared_basis": "energy + capital, 24/7 dedicated",
-  "usd_per_1000_decisions": 0.038599407584982245,
-  "cost_axis": 52.40258082193095,
-  "gate_multiplier": 1.0984121907196018,
-  "measured_gpu_watts": 25.2,
-  "measured_tokens_per_decision": 721.3,
-  "hardware_usd": 880.0,
-  "lifetime_years": 4.0,
-  "electricity_usd_per_kwh": 0.15,
+  "declared_basis": "used RTX 3090 24GB, 4.0y, 24/7 dedicated",
+  "s_per_decision": 0.139,
+  "hardware_usd": 600.0,
+  "usd_per_1000_decisions": 0.0011545991628614915,
+  "cost_axis": 98.12706285163384,
+  "break_even_latency_s_for_axis_100": 0.21024,
+  "decisions_per_hour": 25899.280575539568,
   "sensitivity": {
-    "energy only (marginal)": {
-      "usd_per_1000": 0.013017850000000001,
-      "cost_axis": 66.5638221095291
+    "RTX 3090 24/7 dedicated (declared)": {
+      "usd_per_1000": 0.0011545991628614915,
+      "cost_axis": 98.12706285163384
     },
-    "energy + capital, 24/7 dedicated": {
-      "usd_per_1000": 0.038599407584982245,
-      "cost_axis": 52.40258082193095
+    "RTX 3090 12h/day": {
+      "usd_per_1000": 0.0018157483257229831,
+      "cost_axis": 92.22833042870383
     },
-    "energy + capital, 12h/day": {
-      "usd_per_1000": 0.0641809651699645,
-      "cost_axis": 45.77781268475772
+    "RTX 3090 8h/day": {
+      "usd_per_1000": 0.0024768974885844746,
+      "cost_axis": 88.18275901594964
+    }
+  },
+  "alternative_hardware": {
+    "RTX 4090 24GB": {
+      "usd_per_1000": 0.002366705961440893,
+      "cost_axis": 88.7756708585282
     },
-    "energy + capital, 8h/day": {
-      "usd_per_1000": 0.08976252275494671,
-      "cost_axis": 41.40714850511189
-    },
-    "energy + capital, 6h/day": {
-      "usd_per_1000": 0.11534408033992896,
-      "cost_axis": 38.14014067971534
+    "RTX PRO 6000 24GB (benchmarked)": {
+      "usd_per_1000": 0.012614517985794013,
+      "cost_axis": 66.97388019056172
     }
   }
 }

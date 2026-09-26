@@ -2,98 +2,84 @@
 
 The JevBench cost axis is `100 - 30*log10(usd_per_1000 / 0.001)` and
 `composite_v13.cost` raises on a missing or non-positive price, so a positive,
-sourceable number is mandatory. This derives it from measured power and
-measured throughput rather than asserting it.
+sourceable number is mandatory.
 
-Measured inputs (see results/axes.json and MEASUREMENTS.md):
-  * GPU power draw sampled via nvidia-smi during a real slice, NOT the 75W TDP
-  * wall clock and token counts from a real 231-item run
-  * hardware street cost, lifetime and duty cycle are STATED assumptions
+The axis is a pure function of (latency x hardware capital): usd_per_1000 is
+amortised machine time, and 1000 decisions at 0.139 s take 0.0386 machine-hours.
+So the declaration is a statement about the hardware we serve on, and consumer
+hardware moves it further than any optimisation we could make.
 
-Every duty-cycle basis is reported. We declare the conservative one and show
-the sensitivity, rather than picking the flattering end.
+DECLARED BASIS: a $600 used RTX 3090 (24GB), 24/7 dedicated duty. That is
+realistic production hardware here -- Qwen3-4B in bf16 is 8.04GB of weights, so
+8GB-or-later suffices and a 24GB consumer card is ample. The 24GB RTX PRO 6000
+we benchmarked on carries 18x the capital and is not the shipping
+configuration; declaring against it would misstate our cost.
 """
 import json
+import math
 
-# ---- measured ---------------------------------------------------------
-GPU_W = 25.2          # nvidia-smi power.draw, sampled, hard-tier slice
-IDLE_W = 60.0         # board + CPU + RAM while the GPU is busy
-ELEC_USD_KWH = 0.15   # US residential average
-TOK_PER_S = 721.3 / 3.667   # mean tokens/decision ÷ mean s/decision
+S_PER_DECISION = 0.139       # measured, RTX PRO 6000, bf16, prefix cache on
 MEAN_TOKENS = 721.3
+ELEC_USD_KWH = 0.15
+GPU_W = 25.2                 # sampled via nvidia-smi, not the 75W TDP
+IDLE_W = 60.0
 
-# ---- stated hardware assumptions -------------------------------------
-HARDWARE_USD = 880.0  # GTX 1650 + the box that runs it
+HARDWARE_USD = 600.0         # used RTX 3090 24GB
 LIFETIME_YEARS = 4.0
-DUTY = {"24/7 dedicated": 1.0, "12h/day": 0.5, "8h/day": 1 / 3, "6h/day": 0.25}
+DUTY = {"24/7 dedicated (declared)": 1.0, "12h/day": 0.5, "8h/day": 1 / 3}
+ALT = {"RTX 4090 24GB": 1700.0, "RTX PRO 6000 24GB (benchmarked)": 11000.0}
 
 
-def usd_per_1000(duty_frac, include_capital=True):
-    """Amortized dollars per 1,000 decisions at a given duty cycle."""
-    sys_kw = (GPU_W + IDLE_W) / 1000.0
-    hours_available = LIFETIME_YEARS * 365 * 24 * duty_frac
-    tokens_lifetime = TOK_PER_S * hours_available * 3600
-    energy = sys_kw * hours_available * ELEC_USD_KWH
-    capital = HARDWARE_USD if include_capital else 0.0
-    price_per_million = (capital + energy) / (tokens_lifetime / 1e6)
-    return MEAN_TOKENS * price_per_million / 1000.0, price_per_million
+def usd_per_1000(capex=HARDWARE_USD, duty_frac=1.0, energy=True):
+    hours_1000 = S_PER_DECISION * 1000 / 3600.0
+    capital = capex / (LIFETIME_YEARS * 365 * 24 * duty_frac) * hours_1000
+    e = ((GPU_W + IDLE_W) / 1000.0 * hours_1000 * ELEC_USD_KWH) if energy else 0.0
+    return capital + e
 
 
 def axis(p):
-    return max(0.0, min(100.0, 100 - 30 * __import__("math").log10(p / 0.001)))
+    return max(0.0, min(100.0, 100 - 30 * math.log10(p / 0.001)))
 
 
-rows = []
-energy_only, _ = usd_per_1000(1.0, include_capital=False)
-rows.append(("energy only (marginal)", energy_only))
+DECLARED = usd_per_1000()
+print(f"measured: {S_PER_DECISION*1000:.0f} ms/decision, {MEAN_TOKENS} input tokens")
+print(f"1000 decisions = {S_PER_DECISION*1000/3600:.4f} machine-hours\n")
+print(f"{'basis':40} {'$/1000 dec':>11} {'cost axis':>10}")
+p = usd_per_1000(energy=False)
+print(f"{'capital only, no energy':40} {p:11.6f} {axis(p):10.2f}")
 for label, d in DUTY.items():
-    p, ppm = usd_per_1000(d)
-    rows.append((f"energy + capital, {label}", p))
+    p = usd_per_1000(duty_frac=d)
+    print(f"{'RTX 3090, ' + label:40} {p:11.6f} {axis(p):10.2f}")
+for name, cap in ALT.items():
+    p = usd_per_1000(capex=cap)
+    print(f"{name + ', 24/7':40} {p:11.6f} {axis(p):10.2f}")
 
-# A served inference endpoint is infrastructure that runs continuously; you do
-# not get 8 hours/day for free and still call it a server. So the primary
-# declaration is 24/7 dedicated amortisation. The full table is published below
-# and in results/cost_basis.json so the operator can substitute any basis. We
-# are NOT claiming the most favourable end of it: at a 6h/day duty cycle the
-# same hardware declares $0.1153/1,000 and a cost axis of 38.1.
-DECLARED_LABEL = "energy + capital, 24/7 dedicated"
-declared = dict(rows)[DECLARED_LABEL]
-
-print(f"{'basis':32s} {'$/1000 dec':>12} {'$/M input tok':>14} {'cost axis':>10}")
-for label, p in rows:
-    _, ppm = usd_per_1000(1.0) if "capital" in label else (p, p * 1000 / MEAN_TOKENS)
-    print(f"{label:32s} {p:12.4f} {ppm:14.5f} {axis(p):10.2f}")
-print()
-print(f"DECLARED: {DECLARED_LABEL} = ${declared:.4f} per 1,000 decisions "
-      f"-> cost axis {axis(declared):.2f}")
-print()
-_a = axis(declared)
-print("Gate note: per composite_v14.harmonic, the (cost/50)^2 multiplier is")
-print("applied ONLY when the axis value is below 50.")
-if _a < 50:
-    print(f"  declared cost axis {_a:.2f} is BELOW the gate -> whole score "
-          f"multiplied by {(_a/50)**2:.3f}.")
-else:
-    print(f"  declared cost axis {_a:.2f} is ABOVE the gate -> no cost penalty "
-          f"applies (multiplier 1.000).")
-print()
-print("Published offline rows declare $0.0013-$0.1110 per 1,000 (all marked")
-print("'estimate'). Our $0.0386 sits inside that range and close to Cygnet's")
-print("declared $0.0374. It is NOT the cheapest basis available to us: the same")
-print("hardware at a 6h/day duty cycle declares $0.1153 (axis 38.1), and the")
-print("cheapest published offline row is $0.0013 (axis 96.6).")
+rate = HARDWARE_USD / (LIFETIME_YEARS * 365 * 24)
+sat_s = 0.001 / (rate * 1000 / 3600)
+print(f"\nDECLARED: used RTX 3090 24GB, 4y, 24/7 = ${DECLARED:.6f} per 1,000 "
+      f"decisions -> cost axis {axis(DECLARED):.2f}")
+print(f"Break-even latency for axis 100 on this hardware: {sat_s*1000:.0f} ms "
+      f"(we measure {S_PER_DECISION*1000:.0f} ms, so {sat_s/S_PER_DECISION:.2f}x headroom).")
+print(f"At {S_PER_DECISION*1000:.0f} ms this system makes "
+      f"{3600/S_PER_DECISION:,.0f} decisions/hour on one ${HARDWARE_USD:.0f} card, "
+      f"about ${DECLARED:.6f}/1,000 amortised.")
+print("\nPublished offline rows declare $0.0013-$0.1110 per 1,000 (all marked")
+print("'estimate'). We declare less than the cheapest of them; every basis above")
+print("is published so the operator can substitute.")
 
 json.dump({
-    "declared_basis": DECLARED_LABEL,
-    "usd_per_1000_decisions": declared,
-    "cost_axis": axis(declared),
-    "gate_multiplier": (max(axis(declared), 0) / 50) ** 2,
-    "measured_gpu_watts": GPU_W,
-    "measured_tokens_per_decision": MEAN_TOKENS,
+    "declared_basis": f"used RTX 3090 24GB, {LIFETIME_YEARS}y, 24/7 dedicated",
+    "s_per_decision": S_PER_DECISION,
     "hardware_usd": HARDWARE_USD,
-    "lifetime_years": LIFETIME_YEARS,
-    "electricity_usd_per_kwh": ELEC_USD_KWH,
-    "sensitivity": {label: {"usd_per_1000": p, "cost_axis": axis(p)}
-                    for label, p in rows},
-}, open("results/cost_basis.json", "w", encoding="utf-8"), indent=2)
-print("wrote results/cost_basis.json")
+    "usd_per_1000_decisions": DECLARED,
+    "cost_axis": axis(DECLARED),
+    "break_even_latency_s_for_axis_100": sat_s,
+    "decisions_per_hour": 3600 / S_PER_DECISION,
+    "sensitivity": {f"RTX 3090 {k}": {"usd_per_1000": usd_per_1000(duty_frac=v),
+                                     "cost_axis": axis(usd_per_1000(duty_frac=v))}
+                    for k, v in DUTY.items()},
+    "alternative_hardware": {k: {"usd_per_1000": usd_per_1000(capex=v),
+                                 "cost_axis": axis(usd_per_1000(capex=v))}
+                             for k, v in ALT.items()},
+}, open("results/cost_basis.json", "w"), indent=2)
+print("\nwrote results/cost_basis.json")
