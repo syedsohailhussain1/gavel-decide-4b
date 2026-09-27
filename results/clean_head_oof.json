@@ -1,0 +1,16 @@
+{
+  "nli_oof_accuracy": 0.5284883975982666,
+  "nli_rows": 1720,
+  "nli_items": 860,
+  "positives": 860,
+  "params": 1442817,
+  "recipe": {
+    "epochs": 60,
+    "lr": 0.0001,
+    "batch": 256,
+    "width": 512,
+    "seed": 20260924
+  },
+  "jevbench_items_in_training": 0,
+  "contamination": "none by construction"
+}

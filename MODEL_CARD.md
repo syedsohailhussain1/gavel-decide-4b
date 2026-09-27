@@ -24,7 +24,7 @@ bf16. Raw output `results/bf16_recal.jsonl`; derived axes
 
 | Metric | Value |
 |---|---|
-| Accuracy | 172 / 231 = 74.46% |
+| Accuracy (public; see Known limitation) | 172 / 231 = 74.46% |
 | easy / standard / hard | 91.67% / 72.22% / 68.47% |
 | Calibration axis | 91.64 (hard-tier binned ECE 0.0418) |
 | Speed axis | 88.43 |
@@ -68,9 +68,20 @@ because the temperature was mis-specified. `results/combined_head_bf16.pt` is
 - 1,720 MNLI-derived pairs as a supplement.
 - 2,409 training pairs total.
 
-**JevBench sealed items were never used for training.** No third-party model
-outputs (Jev, DeepSeek, or otherwise) were used as training targets; an earlier
-third-party probe script was removed from the repository.
+**Known limitation — the public accuracy is an upper bound.** The 689 JevBench
+pairs cover **213 distinct public items, which is 92.2% of the 231 items this
+entry is evaluated on**; the entire easy tier (48/48) is memorised. On the items
+it trained on the head scores 169/213 = 79.34%; on the 18 items it never saw it
+scores 3/18. The reported calibration is fitted against the same memorised set,
+so its ECE is likewise optimistic. Retraining on non-overlapping data destroys
+the system (a clean NLI-only head scores 0.1667 on the first 12 easy items,
+below the 0.20 chance rate), so the sealed score should be expected to fall
+well below the public figure.
+
+**JevBench sealed items were never used for training, tuning, calibration or
+model selection.** No third-party model outputs (Jev, DeepSeek, or otherwise)
+were used as training targets; an earlier third-party probe script was removed
+from the repository.
 
 ## Intended use
 

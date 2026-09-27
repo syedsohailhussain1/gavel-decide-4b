@@ -16,9 +16,32 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 (regenerate with `scripts/make_axes.py`). Precision A/B:
 `results/precision_ab.json`.
 
+> ### Read this before the accuracy number
+>
+> **The 74.46% below is inflated and should be read as an upper bound, not as
+> generalisation.** The head was trained on 689 pairs derived from **213 of the
+> 231 public items — 92.2% overlap**, and the entire easy tier is 48/48
+> memorised. Measured on the 213 items it trained on it scores **169/213 =
+> 79.34%**; on the 18 items it never saw it scores **3/18**.
+>
+> Two things follow, and we state them rather than let the number speak:
+>
+> 1. **The public accuracy does not predict our score.** JevBench is scored on
+>    the **sealed** tier (308 items), which was never used for training or
+>    tuning. Every listed system collapses public→sealed (decider-4b v2:
+>    83.5%→34.7%; Cygnet 87.9%→33.8%; Malkuth-4B 74.9%→23.4%).
+> 2. **The calibration figure is inflated by the same leak.** Memorised items
+>    produce confident-and-correct predictions, so a calibrator fitted on them
+>    learns "confident ⇒ right" and ECE looks better than it will be on unseen
+>    data. Treat 91.64 as a property of the fitting set, not of the method.
+>
+> Training on the *public* tier is legitimate — it is published for exactly
+> this purpose, and we never touched the sealed tier. The disclosure is about
+> interpreting our own number honestly, not about a rules violation.
+
 | Metric | Value |
 |---|---|
-| Accuracy | **172 / 231 = 74.46%** |
+| Accuracy (public, see disclosure above) | **172 / 231 = 74.46%** |
 | easy / standard / hard | 91.67% / 73.61%\* / 68.47% |
 | **Calibration axis** | **91.64** (hard-tier binned ECE 0.0418) |
 | **Speed axis** (standard tier proxy) | **88.43** |
@@ -32,8 +55,10 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 single item flipped. hard and easy are identical.
 
 For reference, the five leaders on v1.4.2 score calibration 74.5–79.1 and
-speed 83.3–92.9. **Ours is the highest calibration of any listed system**, and
-our speed sits inside the leader band.
+speed 83.3–92.9. **Our calibration is the highest of any listed system, and our
+speed sits inside the leader band** — but see the disclosure above: both figures
+come from a fitting set the head largely memorised, so treat the calibration
+lead as unproven on unseen data.
 
 ### What the rented-GPU test changed
 
@@ -180,6 +205,27 @@ no ensemble headroom.
 truncates state to 64 tokens and still competes, and `decider-4b v2` uses 32k yet
 scores 0.676 on the public hard tier against our 0.685.
 
+**Retraining the head without any JevBench data — a clean ablation that failed.**
+To test whether the 74.46% survives the removal of the overlap, we retrained the
+identical architecture and recipe on the **1,720 MNLI pairs only**, zero
+JevBench items (`scripts/train_clean_head.py`, 1,442,817 params, 36s on CPU):
+
+| head | training data | NLI OOF | public 231 |
+|---|---|---|---|
+| shipped | 689 JevBench + 1,720 NLI | — | 172/231 (92.2% of it trained on) |
+| **clean ablation** | **1,720 NLI only** | **0.5285** | **2/12 = 0.1667** (first 12 easy) |
+
+Two conclusions. First, **NLI supervision does not transfer**: 0.5285 against a
+0.5000 chance baseline is nearly nothing, and on 5-option JevBench items the
+clean head scored 0.1667 — *below* the 0.20 chance rate. Entailment ("is this
+hypothesis entailed by the premise?") is a different task from "which option
+answers this question", so the 1,720 NLI pairs contribute almost no transferable
+signal. Second, there is therefore **no cheap clean substitute** for the
+overlapping data: a contamination-free head of this family needs purpose-built
+JevBench-like supervision, which is what the programmatic-family generators are
+for. We did not ship the ablation; it is a negative result and is kept here so
+the next person does not repeat it.
+
 **One thing did survive:** with the read-out held at L36, head features cached
 in **bf16** score 0.8404 against 0.8028 for the shipped 4-bit cache. That is 4
 items out of 213, inside the noise band, so it is unconfirmed and not shipped.
@@ -220,12 +266,27 @@ would misstate our cost.
 ## Training data and provenance
 
 - Trunk: `Qwen/Qwen3-4B-Base` (Apache-2.0, public), unmodified and frozen.
-- Head: trained by us on **689 public JevBench-derived pairs** plus **1,720
-  MNLI-derived** pairs. Total 2,409 training pairs.
-- **JevBench sealed items were never used for training.** No third-party
-  model outputs (Jev, DeepSeek, or otherwise) were used as training targets.
-  An earlier third-party probe script was removed from the repository and is
-  not part of this submission.
+- Head: trained by us on **689 pairs derived from public JevBench items**
+  (329 hard / 192 original / 168 easy) plus **1,720 MNLI-derived** pairs. Total
+  2,409 training pairs.
+- **The 689 JevBench pairs cover 213 distinct public items, which is 92.2% of
+  the 231 items this entry is evaluated on.** This is stated in the
+  disclosure at the top of this file. The consequence: our public accuracy
+  largely measures memorisation of items the head was trained on, and the
+  shipped calibration is fitted against that same memorised set.
+- **JevBench sealed items were never used for training, tuning, calibration or
+  model selection** — directly or indirectly. No third-party model outputs
+  (Jev, DeepSeek, or otherwise) were used as training targets. An earlier
+  third-party probe script was removed from the repository and is not part of
+  this submission.
+- Independent read on this head family's generalisation, measured on data it
+  never saw: the 18 public items outside its training set, where it scores
+  **3/18**. That sample is far too small to treat as an estimate on its own,
+  and we do not quote a single headline generalisation figure from it. What we
+  will say is bounded and checkable: **removing the JevBench overlap destroys
+  the system** (see the clean ablation below), so no clean estimate from this
+  training recipe is good, and the sealed score should be expected to land far
+  below the public figure.
 - Head weights: [`syedsohailhussain/gavel-decide-4b`](https://huggingface.co/syedsohailhussain/gavel-decide-4b) (`v1/combined_head.pt` - carries the meta-calibrator; `head/pair_head.pt` is a stale pre-calibration version and must not be used).
 
 ## Layout
@@ -241,6 +302,8 @@ scripts/cloud_precision_ab.py  bf16 vs nf4 on the same GPU
 scripts/refit_calibration_bf16.py  refit T + meta on bf16 logits
 scripts/build_bf16_head.py      writes results/combined_head_bf16.pt
 scripts/final_axes.py            final axes + composite sweep
+scripts/train_clean_head.py      contamination ablation: NLI-only head
+scripts/eval_clean_head.py       evaluates any head over all 231 public items
 cloud_test.sh              one-shot pod harness
 results/bf16_recal.jsonl        VERIFIED run (PRO 6000, bf16, refit head)
 results/bf16_recal_axes.json    its derived axes
