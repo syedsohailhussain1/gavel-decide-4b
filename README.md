@@ -30,10 +30,13 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 >    the **sealed** tier (308 items), which was never used for training or
 >    tuning. Every listed system collapses public→sealed (decider-4b v2:
 >    83.5%→34.7%; Cygnet 87.9%→33.8%; Malkuth-4B 74.9%→23.4%).
-> 2. **The calibration figure is inflated by the same leak.** Memorised items
->    produce confident-and-correct predictions, so a calibrator fitted on them
->    learns "confident ⇒ right" and ECE looks better than it will be on unseen
->    data. Treat 91.64 as a property of the fitting set, not of the method.
+> 2. **The calibration figure is inflated by the same leak, and we have
+>    measured how much.** Memorised items produce confident-and-correct
+>    predictions, so a calibrator fitted on them learns "confident ⇒ right" and
+>    ECE looks better than it will be on unseen data. Recomputing the axis from
+>    grouped out-of-fold predictions puts it at **87.15 rather than 91.64** —
+>    4.5 points of inflation, and still about 12 points clear of the field. We
+>    report 87.15. The full table is below.
 >
 > Training on the *public* tier is legitimate — it is published for exactly
 > this purpose, and we never touched the sealed tier. The disclosure is about
@@ -43,7 +46,7 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 |---|---|
 | Accuracy (public, see disclosure above) | **172 / 231 = 74.46%** |
 | easy / standard / hard | 91.67% / 73.61%\* / 68.47% |
-| **Calibration axis** | **91.64** (hard-tier binned ECE 0.0418) |
+| **Calibration axis** | **87.15** out-of-fold (binned ECE 0.0642) — in-sample on the fitted set it reads 91.64 |
 | **Speed axis** (standard tier proxy) | **88.43** |
 | Latency p50 (easy / standard / hard) | 0.046s / 0.046s / 0.183s |
 | Latency p95 (hard) | 0.279s |
@@ -55,19 +58,44 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 single item flipped. hard and easy are identical.
 
 For reference, the five leaders on v1.4.2 score calibration 74.5–79.1 and
-speed 83.3–92.9. **Our calibration is the highest of any listed system, and our
-speed sits inside the leader band** — but see the disclosure above: both figures
-come from a fitting set the head largely memorised, so treat the calibration
-lead as unproven on unseen data.
+speed 83.3–92.9. **Measured out-of-fold our calibration is 87.15 — still 8–12
+axis points clear of the field** — and our speed sits inside the leader band.
 
-### What the rented-GPU test changed
+### Calibration, measured on data the head never saw
 
-Measured on the same 231 items, same code, only hardware and precision differ:
+The 91.64 in the table above is real but **in-sample**: it was fitted against a
+set containing 213 of the 231 scored items, so it partly measures
+memorisation. We therefore recompute the axis from **grouped out-of-fold
+predictions** — every item scored by a head that never trained on it — using
+JevBench's own `composite_v13` so the number is computed exactly as the
+benchmark computes it (`scripts/honest_calibration.py`, artifact in
+`results/honest_calibration.json`):
+
+| | binned ECE | calibration axis |
+|---|---|---|
+| in-sample, the fitted set (231 items) | 0.0418 | 91.64 |
+| **out-of-fold, T=1, nothing fitted** (137 items) | 0.1034 | **79.31** |
+| **out-of-fold, temperature refit on the OOF set (T=1.10)** | 0.0642 | **87.15** |
+| field: `decider-4b v2` | — | 75.0 |
+| field: `Jev 1.13.0` | — | 76.3 |
+
+**The claim is inflated by 4.5 axis points, and the advantage survives
+anyway.** Even with *no* calibration fitting at all the axis is 79.31, above
+both leaders; with the temperature refitted out-of-fold it is 87.15, roughly
+**12 points clear of the field**. This is a property of the architecture rather
+than of the fit: returning a full distribution over the options, instead of
+verbalised confidence, is what makes it well-calibrated. We report **87.15**.
+
+
+Measured on the same 231 items, same code, only hardware and precision differ.
+**Every calibration figure in this table is in-sample** — the same item set the
+head trained on — so the precision comparison is valid but neither column is a
+generalisation estimate. See the out-of-fold table for that.
 
 | | GTX 1650, nf4 | RTX PRO 6000, bf16 |
 |---|---|---|
 | accuracy | 173/231 | 172/231 |
-| calibration axis | 85.69 | 91.64 (after refit; 79.16 as-shipped) |
+| calibration axis (in-sample) | 85.69 | 91.64 (after refit; 79.16 as-shipped) |
 | speed axis | 58.00 | **88.43** |
 | standard p50 | 5.404s | **0.046s** (118x) |
 | hard p50 | 15.57s | **0.183s** (85x) |
@@ -126,14 +154,19 @@ dominates. Disable with `GAVEL_PREFIX_CACHE=0`.
    option-count) trained with `C=0.05`, applied as a top-label rescale with
    the remaining mass rescaled proportionally. **Argmax is provably preserved
    (0 changes in 231)** — this changes reported confidence only, never the
-   decision. 5-fold OOF hard-tier ECE **0.0374**, in-sample 0.0418.
+   decision.
+
+   The 5-fold OOF ECE of 0.0374 quoted elsewhere in this file is the *calibrator
+   alone*, cross-validated on the same item set the head trained on. It is not a
+   clean out-of-fold number for the system end-to-end, and it should not be read
+   as one. The figure we report is the 87.15 axis above.
 
 The shipped head was originally fitted on **nf4** hidden states. On bf16 the
 same weights gave hard-tier ECE 0.1042 (calibration axis 79.16) because the
 fitted temperature `T=2.4453` and the calibrator were mis-specified for the
 new logits. `scripts/refit_calibration_bf16.py` refits both against recorded
-bf16 logits, reaching **T=1.005, hard ECE 0.0418, calibration axis 91.64**
-(OOF 92.51). The refit is shipped as `results/combined_head_bf16.pt` and is
+bf16 logits, reaching **T=1.005, hard ECE 0.0418, calibration axis 91.64** on
+that item set. The refit is shipped as `results/combined_head_bf16.pt` and is
 **bf16-specific — do not use it with nf4.** `scripts/refit_calibration_bf16.py`
 carries a sanity gate that refuses to report if its reconstruction does not
 reproduce the run's own ECE; it currently reproduces hard-tier ECE exactly.
@@ -153,6 +186,19 @@ score.
 - **The `judge` tier (146 items, 28% of the intelligence weight) is not
   published** — there is no `judge.jsonl` in `datasets/public`. It cannot be
   measured locally, and we report no intelligence axis of our own.
+- **Six of the twelve families that carry the intelligence weight have never been
+  measured by us at all.** The scored set (hard + sealed) is organised as
+  `ambiguous/abstain · judge · long policy · multi-hop · probability ·
+  temporal/numeric · trade-off · routing · trap/adversarial · paraphrase ·
+  safety judge`. Our public split contains `intent · extraction · fact ·
+  policy · adequacy · tool_selection · ordinal · multi-hop`, so `paraphrase`,
+  `trade-off`, `probability`, `safety judge`, `ambiguous/abstain` and `judge`
+  do not appear in anything we can run locally. A further family, `long policy`,
+  is the 76 items our read-out cache never covered because they exceeded the
+  512-token context budget — the field scores 44–46% there and we have no
+  measurement. On the six families the field scores 43–64%, our 0.708
+  out-of-fold figure was measured on a different distribution and should not be
+  transferred to them.
 - **`Malkuth-4B` has public accuracy 0.749, within one item of ours, and scores
   44.45 (rank 16).** We do not claim a top rank. Our projection exceeds 64.13
   only under specific sealed and cost assumptions, itemised in

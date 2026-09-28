@@ -1,0 +1,61 @@
+{
+  "question": "is the margin informative enough to support abstention?",
+  "n_items": 137,
+  "accuracy_full_coverage": {
+    "mined": 0.36496350364963503,
+    "4B": 0.708029197080292
+  },
+  "mined": {
+    "aurc": 0.332648028607744,
+    "at": {
+      "coverage_100pct": 0.365,
+      "coverage_80pct": 0.3455,
+      "coverage_60pct": 0.3537,
+      "coverage_40pct": 0.3091
+    },
+    "monotone_frac": 0.375,
+    "accuracy_full": 0.36496350364963503,
+    "points": [
+      [
+        1.0,
+        0.365
+      ]
+    ]
+  },
+  "four_b": {
+    "aurc": 0.8504648048524107,
+    "at": {
+      "coverage_100pct": 0.708,
+      "coverage_80pct": 0.7545,
+      "coverage_60pct": 0.8415,
+      "coverage_40pct": 0.8545
+    },
+    "monotone_frac": 0.7058823529411765,
+    "accuracy_full": 0.708029197080292,
+    "points": [
+      [
+        1.0,
+        0.708
+      ]
+    ]
+  },
+  "random_null": {
+    "aurc": 0.3826501695763103,
+    "at": {
+      "coverage_100pct": 0.365,
+      "coverage_80pct": 0.3909,
+      "coverage_60pct": 0.4268,
+      "coverage_40pct": 0.3636
+    },
+    "monotone_frac": 0.36764705882352944,
+    "accuracy_full": 0.36496350364963503,
+    "points": [
+      [
+        1.0,
+        0.365
+      ]
+    ]
+  },
+  "mined_beats_random": true,
+  "verdict": "margin is informative - an accuracy-vs-coverage curve exists with no training and a checkable certificate"
+}

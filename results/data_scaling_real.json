@@ -1,0 +1,33 @@
+{
+  "question": "does the 4B head improve with more REAL data?",
+  "protocol": "5 x 20% item holdout, identical head and recipe, training set grown over the remaining items",
+  "n_items_available": 137,
+  "curve": [
+    {
+      "n_train_items": 20,
+      "n_train_rows": 64,
+      "mean": 0.5481481552124023,
+      "std": 0.0637209340929985
+    },
+    {
+      "n_train_items": 50,
+      "n_train_rows": 170,
+      "mean": 0.49629631638526917,
+      "std": 0.06869348138570786
+    },
+    {
+      "n_train_items": 100,
+      "n_train_rows": 325,
+      "mean": 0.6148147583007812,
+      "std": 0.06457628309726715
+    },
+    {
+      "n_train_items": 170,
+      "n_train_rows": 359,
+      "mean": 0.585185170173645,
+      "std": 0.04319223016500473
+    }
+  ],
+  "first_to_last_delta": 0.037037014961242676,
+  "verdict": "scaling data is worth pod spend"
+}

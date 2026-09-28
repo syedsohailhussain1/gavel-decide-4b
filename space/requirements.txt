@@ -1,0 +1,5 @@
+gradio==5.49.1
+transformers==5.15.0
+accelerate
+torch
+safetensors

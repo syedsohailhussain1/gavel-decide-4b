@@ -1,0 +1,37 @@
+{
+  "model": "google/embeddinggemma-300m",
+  "mechanism": "generative cross-encoder: mean per-token log P(option | state, question) via the LM head",
+  "n_items": 213,
+  "chance": 0.34272300469483563,
+  "P1_generative": {
+    "acc": 0.40375586854460094,
+    "by_type": {
+      "extraction": 0.4583333333333333,
+      "fact": 0.5,
+      "intent": 0.3333333333333333,
+      "tool_selection": 0.5833333333333334,
+      "opus": 0.3,
+      "sol": 0.38181818181818183,
+      "adequacy": 0.5833333333333334,
+      "policy": 0.5,
+      "routing": 0.4166666666666667
+    }
+  },
+  "P2_with_prefix": {
+    "acc": 0.4084507042253521,
+    "by_type": {
+      "extraction": 0.4166666666666667,
+      "fact": 0.5,
+      "intent": 0.25,
+      "tool_selection": 0.8333333333333334,
+      "opus": 0.34,
+      "sol": 0.45454545454545453,
+      "adequacy": 0.4166666666666667,
+      "policy": 0.4166666666666667,
+      "routing": 0.25
+    }
+  },
+  "reference_Z_cosine": 0.5446,
+  "reference_E_trained_probe": 0.2113,
+  "reference_4B_trained_probe": 0.708
+}

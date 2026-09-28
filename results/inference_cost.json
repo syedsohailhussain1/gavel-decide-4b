@@ -1,0 +1,39 @@
+{
+  "measured_this_cpu": {
+    "mined_library_us_per_decision": 112.93833376839757,
+    "mined_decisions_per_s": 8854.389529517039
+  },
+  "reference": {
+    "4B_measured_s": 0.139,
+    "4B_source": "shipped entry, RTX PRO 6000, bf16, prefix-cached",
+    "300M_estimate_s": 0.01037313432835821,
+    "300M_estimate_basis": "4B x (300/4020) parameter ratio; NOT measured on GPU"
+  },
+  "configurations": [
+    {
+      "name": "4B alone",
+      "latency_s": 0.139,
+      "vs_4B": 1.0,
+      "accuracy": 0.708
+    },
+    {
+      "name": "4B + mined",
+      "latency_s": 0.13911293833376842,
+      "vs_4B": 1.000812505998334,
+      "accuracy": null
+    },
+    {
+      "name": "4B + 300M (est.)",
+      "latency_s": 0.14937313432835822,
+      "vs_4B": 1.0746268656716418,
+      "accuracy": null
+    },
+    {
+      "name": "all three",
+      "latency_s": 0.14948607266212663,
+      "vs_4B": 1.0754393716699757,
+      "accuracy": 0.6934
+    }
+  ],
+  "verdict": "the 3-system blend pays 1.12x latency for 1.5 points WORSE accuracy. The oracle is free only because it is impossible. Abstention on the 4B's own margin is free and worth +14.6."
+}

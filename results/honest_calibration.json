@@ -1,0 +1,33 @@
+{
+  "question": "what is our calibration on data the head never saw?",
+  "axis_computed_by": "D:\\jevbench\\jevbench\\composite_v13.py",
+  "shipped_in_sample": {
+    "binned_ece": 0.041796550025754386,
+    "calibration_axis": 91.64068999484913,
+    "note": "fitted on a set containing 213 of the 231 scored items"
+  },
+  "honest_oof_raw": {
+    "n": 137,
+    "accuracy": 0.708029197080292,
+    "mean_confidence": 0.748778654970758,
+    "overconfidence": 0.04074945789046602,
+    "binned_ece": 0.1034465853333193,
+    "brier": 0.18639278388489058,
+    "calibration_axis": 79.31068293333614
+  },
+  "honest_oof_temperature_refit": {
+    "n": 137,
+    "accuracy": 0.708029197080292,
+    "mean_confidence": 0.7298493851147647,
+    "overconfidence": 0.02182018803447272,
+    "binned_ece": 0.06423619903038122,
+    "brier": 0.18659791914166177,
+    "calibration_axis": 87.15276019392375
+  },
+  "temperature_refit": 1.1,
+  "field_reference": {
+    "decider_4b_v2": 75.0,
+    "jev_1_13_0": 76.3
+  },
+  "inflation": 4.487929800925372
+}

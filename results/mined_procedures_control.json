@@ -1,0 +1,103 @@
+{
+  "why": "the first mined run scored 0.8310 with a constant-False column, i.e. 'always pick option 0'. JevBench places gold first in most items, so that number was the position leak, not a procedure.",
+  "positional_control": {
+    "gold_at_option_0": 0.8169014084507042,
+    "gold_at_last_option": 0.18309859154929578,
+    "chance": 0.3427230046948357
+  },
+  "shuffled": {
+    "gold_at_option_0_after_shuffle": 0.38028169014084506,
+    "heldout_accuracy": 0.5492957746478874,
+    "hits": 117,
+    "total": 213,
+    "per_fold": [
+      {
+        "fold": 0,
+        "heldout": 0.4418604651162791,
+        "expr": "div(feat:overlap_state,feat:position)"
+      },
+      {
+        "fold": 1,
+        "heldout": 0.627906976744186,
+        "expr": "div(feat:overlap_state_all,feat:n_options)"
+      },
+      {
+        "fold": 2,
+        "heldout": 0.5813953488372093,
+        "expr": "div(feat:overlap_state_all,feat:opt_len)"
+      },
+      {
+        "fold": 3,
+        "heldout": 0.5714285714285714,
+        "expr": "div(feat:overlap_state_all,feat:n_options)"
+      },
+      {
+        "fold": 4,
+        "heldout": 0.5238095238095238,
+        "expr": "div(feat:overlap_state_all,feat:n_options)"
+      }
+    ]
+  },
+  "top_procedures_shuffled": [
+    {
+      "val": 0.514018691588785,
+      "train": 0.5377358490566038,
+      "expr": "div(feat:overlap_state_all,feat:n_options)"
+    },
+    {
+      "val": 0.514018691588785,
+      "train": 0.5377358490566038,
+      "expr": "div(feat:overlap_state_all,feat:word_count_state)"
+    },
+    {
+      "val": 0.514018691588785,
+      "train": 0.5377358490566038,
+      "expr": "div(feat:overlap_state_all,feat:state_len)"
+    },
+    {
+      "val": 0.48598130841121495,
+      "train": 0.5471698113207547,
+      "expr": "div(feat:overlap_state_all,feat:has_criteria)"
+    },
+    {
+      "val": 0.4766355140186916,
+      "train": 0.5471698113207547,
+      "expr": "div(feat:overlap_state_all,feat:opt_len)"
+    },
+    {
+      "val": 0.4766355140186916,
+      "train": 0.5377358490566038,
+      "expr": "div(feat:overlap_state_all,feat:label_len)"
+    },
+    {
+      "val": 0.4766355140186916,
+      "train": 0.4716981132075472,
+      "expr": "div(feat:overlap_state_all,feat:overlap_state_all)"
+    },
+    {
+      "val": 0.4766355140186916,
+      "train": 0.42452830188679247,
+      "expr": "div(feat:overlap_state_all,feat:position)"
+    },
+    {
+      "val": 0.4672897196261682,
+      "train": 0.46226415094339623,
+      "expr": "div(feat:overlap_state_all,feat:ratio_state)"
+    },
+    {
+      "val": 0.4485981308411215,
+      "train": 0.4811320754716981,
+      "expr": "div(feat:overlap_state_all,feat:novel_words)"
+    }
+  ],
+  "references": {
+    "4B_trained_head_137items": 0.708,
+    "300M_zero_shot_213items": 0.5915,
+    "trained_head_on_300M": 0.2113,
+    "first_mined_run_UNSHUFFLED": 0.831
+  },
+  "gates": {
+    "ood_abstention": "NOT IMPLEMENTED",
+    "position_leak": "now measured and controlled for"
+  }
+}

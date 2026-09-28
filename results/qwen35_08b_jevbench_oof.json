@@ -1,0 +1,59 @@
+{
+  "trunk": "Qwen/Qwen3.5-0.8B-Base",
+  "hidden": 1024,
+  "n_pairs": 689,
+  "n_items": 213,
+  "n_correct": 71,
+  "accuracy": 0.3333333333333333,
+  "chance": 0.3427230046948358,
+  "lift_over_chance": 0.9726027397260271,
+  "by_type": {
+    "adequacy": {
+      "correct": 6,
+      "total": 12,
+      "acc": 0.5
+    },
+    "extraction": {
+      "correct": 10,
+      "total": 24,
+      "acc": 0.4166666666666667
+    },
+    "fact": {
+      "correct": 4,
+      "total": 12,
+      "acc": 0.3333333333333333
+    },
+    "intent": {
+      "correct": 2,
+      "total": 24,
+      "acc": 0.08333333333333333
+    },
+    "opus": {
+      "correct": 20,
+      "total": 50,
+      "acc": 0.4
+    },
+    "policy": {
+      "correct": 5,
+      "total": 12,
+      "acc": 0.4166666666666667
+    },
+    "routing": {
+      "correct": 2,
+      "total": 12,
+      "acc": 0.16666666666666666
+    },
+    "sol": {
+      "correct": 17,
+      "total": 55,
+      "acc": 0.3090909090909091
+    },
+    "tool_selection": {
+      "correct": 5,
+      "total": 12,
+      "acc": 0.4166666666666667
+    }
+  },
+  "protocol": "grouped 5-fold OOF keyed by item, same recipe as the 4B run",
+  "reference_4b_same_pairs": 0.708
+}

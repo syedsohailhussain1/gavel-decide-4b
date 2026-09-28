@@ -1,0 +1,59 @@
+{
+  "protocol": "grouped 5-fold OOF, folds keyed by item, per-option binary head, item prediction = argmax over held-out options",
+  "n_items": 137,
+  "n_correct": 97,
+  "accuracy": 0.708029197080292,
+  "mean_chance": 0.34367396593673966,
+  "by_type": {
+    "adequacy": {
+      "correct": 7,
+      "total": 12,
+      "acc": 0.5833333333333334
+    },
+    "extraction": {
+      "correct": 21,
+      "total": 24,
+      "acc": 0.875
+    },
+    "fact": {
+      "correct": 10,
+      "total": 12,
+      "acc": 0.8333333333333334
+    },
+    "intent": {
+      "correct": 15,
+      "total": 24,
+      "acc": 0.625
+    },
+    "policy": {
+      "correct": 10,
+      "total": 12,
+      "acc": 0.8333333333333334
+    },
+    "routing": {
+      "correct": 5,
+      "total": 12,
+      "acc": 0.4166666666666667
+    },
+    "sol": {
+      "correct": 19,
+      "total": 29,
+      "acc": 0.6551724137931034
+    },
+    "tool_selection": {
+      "correct": 10,
+      "total": 12,
+      "acc": 0.8333333333333334
+    }
+  },
+  "recipe": {
+    "epochs": 60,
+    "lr": 0.0001,
+    "batch": 256,
+    "width": 512,
+    "seed": 20260924,
+    "folds": 5
+  },
+  "covers": "accuracy on unseen items OF THE COVERED TYPES only; the ordinal type has zero training coverage and is excluded",
+  "runtime_s": 11.2
+}

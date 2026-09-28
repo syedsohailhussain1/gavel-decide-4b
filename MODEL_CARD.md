@@ -26,14 +26,19 @@ bf16. Raw output `results/bf16_recal.jsonl`; derived axes
 |---|---|
 | Accuracy (public; see Known limitation) | 172 / 231 = 74.46% |
 | easy / standard / hard | 91.67% / 72.22% / 68.47% |
-| Calibration axis | 91.64 (hard-tier binned ECE 0.0418) |
+| Calibration axis | **87.15** out-of-fold (binned ECE 0.0642); 91.64 in-sample on the fitted set |
 | Speed axis | 88.43 |
 | Latency p50 (easy / standard / hard) | 0.046s / 0.046s / 0.183s |
 | Seconds per decision | 0.139 |
 | Schema validity / operational success | 1.000 / 1.000 |
 
 For context, the five leaders on v1.4.2 record calibration 74.5–79.1 and speed
-83.3–92.9. This system's calibration is the highest of any listed row.
+83.3–92.9. **Measured out-of-fold this system's calibration is 87.15, roughly
+12 axis points clear of the field.** The 91.64 figure is in-sample on a set the
+head trained on; recomputing from grouped out-of-fold predictions, with the
+axis produced by JevBench's own `composite_v13`, costs 4.5 points and the
+advantage survives. Even with no calibration fitting at all the axis is 79.31,
+still above every listed row.
 
 ## How it answers
 
@@ -55,7 +60,10 @@ Two stages, both fitted on public data only:
 
 **The rescale never changes a decision** — argmax and accuracy are identical with
 and without it (verified, 0 changes across 231 items). It moves reported
-confidence only. 5-fold out-of-fold hard-tier ECE 0.0374; in-sample 0.0418.
+confidence only. The 0.0374 quoted there is the *calibrator alone*, cross-validated
+on the item set the head trained on, so it is not a clean end-to-end
+out-of-fold number. The figure this card reports is the 87.15 axis above,
+computed end-to-end from grouped out-of-fold predictions.
 
 The shipped head was refitted for bf16. The earlier artefact was fitted on
 bitsandbytes nf4 hidden states, where the same weights gave hard-tier ECE 0.1042

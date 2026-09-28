@@ -1,0 +1,85 @@
+{
+  "approach": "behaviour-space beam search over 34 typed operators reused from thrm.dsl, deduplicated by value vector, selected on held-out accuracy",
+  "operators_reused": 34,
+  "n_items": 213,
+  "n_option_rows": 689,
+  "base_features": 18,
+  "chance": 0.3427230046948357,
+  "heldout_accuracy_leave_one_fold_out": 0.8309859154929577,
+  "per_fold": [
+    {
+      "fold": 0,
+      "heldout_acc": 0.8837209302325582,
+      "procedure": "lt(feat:overlap_state,feat:overlap_state)"
+    },
+    {
+      "fold": 1,
+      "heldout_acc": 0.8372093023255814,
+      "procedure": "lt(feat:overlap_state,feat:overlap_state)"
+    },
+    {
+      "fold": 2,
+      "heldout_acc": 0.7674418604651163,
+      "procedure": "lt(feat:overlap_state,feat:overlap_state)"
+    },
+    {
+      "fold": 3,
+      "heldout_acc": 0.7857142857142857,
+      "procedure": "div(feat:overlap_state_all,feat:overlap_state_all)"
+    },
+    {
+      "fold": 4,
+      "heldout_acc": 0.8809523809523809,
+      "procedure": "lt(feat:overlap_state,feat:overlap_state)"
+    }
+  ],
+  "candidates_over_floor": 12,
+  "min_heldout_floor": 0.4,
+  "top_procedures": [
+    {
+      "heldout": 0.7663551401869159,
+      "train": 0.839622641509434,
+      "expr": "div(feat:overlap_state_all,feat:overlap_state_all)"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "lt(feat:overlap_state,feat:overlap_state)"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "div(feat:overlap_state,feat:is_first)"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "div(feat:overlap_state,feat:novel_words)"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "div(feat:overlap_state_all,feat:is_first)"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "div(feat:overlap_question,feat:is_first)"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "lt(neg(feat:overlap_state),neg(feat:overlap_state))"
+    },
+    {
+      "heldout": 0.7570093457943925,
+      "train": 0.8773584905660378,
+      "expr": "div(neg(feat:overlap_state),not(feat:overlap_state))"
+    }
+  ],
+  "ambiguity_items_top5": 27,
+  "gates": {
+    "no_ambiguity": "informational only at this stage",
+    "ood_abstention": "NOT IMPLEMENTED - required before any external claim"
+  }
+}

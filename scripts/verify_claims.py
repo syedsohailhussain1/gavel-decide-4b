@@ -104,4 +104,31 @@ for f in ("README.md", "MODEL_CARD.md"):
         else:
             print(f"  [OK ] {f} clean of {bad}")
 
+print("\n=== the out-of-fold calibration claim ===")
+hc = json.loads((R / "honest_calibration.json").read_text(encoding="utf-8"))
+oof = hc["honest_oof_temperature_refit"]
+raw = hc["honest_oof_raw"]
+in_s = hc["shipped_in_sample"]
+check("in-sample axis", 91.64, round(in_s["calibration_axis"], 2), tol=5e-3)
+check("in-sample ECE", 0.0418, round(in_s["binned_ece"], 4), tol=5e-5)
+check("OOF axis, T refit", 87.15, round(oof["calibration_axis"], 2), tol=5e-3)
+check("OOF ECE, T refit", 0.0642, round(oof["binned_ece"], 4), tol=5e-5)
+check("OOF axis, T=1 no fitting", 79.31, round(raw["calibration_axis"], 2),
+      tol=5e-3)
+check("OOF accuracy", 0.7080, round(oof["accuracy"], 4), tol=5e-5)
+check("OOF n items", 137, oof["n"])
+check("inflation", 4.5, round(hc["inflation"], 1), tol=5e-2)
+
+print("\n=== the docs must not claim 91.64 as the headline, or the 0.0374 as clean ===")
+for f in ("README.md", "MODEL_CARD.md"):
+    txt = (E / f).read_text(encoding="utf-8")
+    checks = {
+        "reports 87.15": "87.15" in txt,
+        "labels 91.64 in-sample": "in-sample" in txt,
+        "says advantage survives": ("survives" in txt or "clear of the field" in txt),
+    }
+    for label, good in checks.items():
+        ok &= good
+        print(f"  [{'OK ' if good else 'BAD'}] {f:14} {label}")
+
 print("\n" + ("ALL CHECKS PASSED" if ok else "*** SOME CHECKS FAILED ***"))

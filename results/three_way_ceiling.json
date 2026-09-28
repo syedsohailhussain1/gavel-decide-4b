@@ -1,0 +1,22 @@
+{
+  "n_items": 137,
+  "chance": 0.3427230046948357,
+  "singles": {
+    "4B_oof": 0.708029197080292,
+    "300m_zero_shot": 0.35036496350364965,
+    "mined_heldout": 0.656934306569343
+  },
+  "best_blend": {
+    "accuracy": 0.6934306569343066,
+    "weights_4b_300m_mined": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "WARNING": "weights selected on the same items; optimistic"
+  },
+  "oracle_4b_300m": 0.708029197080292,
+  "oracle_all_three": 0.708029197080292,
+  "items_no_system_solves": 7,
+  "verdict": "1.0 is not reachable from these three systems. The oracle is the hard ceiling for any router; exceeding it requires NEW INFORMATION, not better weighting."
+}

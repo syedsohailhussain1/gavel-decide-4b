@@ -1,0 +1,76 @@
+{
+  "protocol": "ONE library mined on 4 folds and held out on the 5th; per-item shuffled options; every threshold fixed before the run",
+  "mined_heldout_accuracy": 0.4418604651162791,
+  "chance": 0.3427230046948357,
+  "always_first": 0.38028169014084506,
+  "always_last": 0.3004694835680751,
+  "gates": {
+    "positional_control": {
+      "baseline_always_first": 0.38028169014084506,
+      "baseline_always_last": 0.3004694835680751,
+      "best_positional": 0.38028169014084506,
+      "mined": 0.4418604651162791,
+      "margin": 0.061578774975434014,
+      "required_margin": 0.0,
+      "pass": 1.0,
+      "note": "the control whose absence let lt(x,x) score 0.8310"
+    },
+    "non_degeneracy": {
+      "n_survivors": 6,
+      "constant_vectors": 0,
+      "behaviourally_distinct": 6,
+      "pass": true,
+      "note": "rejects any winner that is effectively a constant column, and rejects two procedures that are the same behaviour twice"
+    },
+    "no_ambiguity": {
+      "items_with_conflicting_claims": 27,
+      "n_items": 213,
+      "fraction": 0.1267605633802817,
+      "tolerance": 0.15,
+      "pass": true,
+      "note": "within ONE library, an item claimed by two procedures with different answers is ambiguity. (Across independent CV models it is not - that was an earlier measurement bug.)"
+    },
+    "ood_abstention": {
+      "feature_probed": "overlap_state_all",
+      "mean_margin_in_domain": 0.6995305164319249,
+      "mean_margin_ood": 0.3333333333333333,
+      "required_drop": 0.05,
+      "drop": 0.36619718309859156,
+      "pass": true,
+      "note": "OOD input keeps the schema but swaps the state across question types, so the lexical features the procedures depend on become uninformative. They must lose confidence, not keep guessing."
+    }
+  },
+  "all_gates_pass": true,
+  "library": [
+    {
+      "heldout": 0.4418604651162791,
+      "train": 0.4294117647058823,
+      "expr": "div(feat:overlap_state,feat:position)"
+    },
+    {
+      "heldout": 0.4186046511627907,
+      "train": 0.4411764705882353,
+      "expr": "div(feat:overlap_state,feat:opt_len)"
+    },
+    {
+      "heldout": 0.4186046511627907,
+      "train": 0.4411764705882353,
+      "expr": "div(feat:overlap_state_all,feat:overlap_state)"
+    },
+    {
+      "heldout": 0.4186046511627907,
+      "train": 0.4411764705882353,
+      "expr": "div(feat:overlap_state_all,feat:jacc_state)"
+    },
+    {
+      "heldout": 0.4186046511627907,
+      "train": 0.43529411764705883,
+      "expr": "div(feat:overlap_state,feat:label_len)"
+    },
+    {
+      "heldout": 0.4186046511627907,
+      "train": 0.4176470588235294,
+      "expr": "div(feat:overlap_state,feat:is_last)"
+    }
+  ]
+}

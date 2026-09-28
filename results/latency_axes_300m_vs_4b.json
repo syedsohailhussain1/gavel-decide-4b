@@ -1,0 +1,40 @@
+{
+  "machine": "i5-10300H, 4 cores, GTX 1650 present but unused here (CPU run)",
+  "threads": 8,
+  "systems": [
+    {
+      "system": "300M cosine, CPU",
+      "p50_s": 0.30004520004149526,
+      "decisions_per_s": 3.3328311863069406,
+      "usd_per_1000": 0.0014306283772272776,
+      "cost_axis": 99.08649152989278,
+      "note": "this laptop, fp32",
+      "speedup_vs_4b_entry": 0.4632635348966648
+    },
+    {
+      "system": "300M cosine @4-bit",
+      "p50_s": 0.30004520004149526,
+      "decisions_per_s": 3.3328311863069406,
+      "usd_per_1000": 0.0014306283772272776,
+      "cost_axis": 99.08649152989278,
+      "note": "quantised, est. 1.6x faster",
+      "speedup_vs_4b_entry": 0.4632635348966648
+    },
+    {
+      "system": "4B probe, 24GB GPU",
+      "p50_s": 0.139,
+      "decisions_per_s": 7.194244604316546,
+      "usd_per_1000": 0.0006627579591577878,
+      "cost_axis": 99.20303669577928,
+      "note": "shipped entry, PRO 6000 bf16",
+      "speedup_vs_4b_entry": 1.0
+    }
+  ],
+  "300m_params": 302863104,
+  "300m_size_mb": {
+    "fp32": 1155.3310546875,
+    "bf16": 577.66552734375,
+    "4bit": 144.4163818359375
+  },
+  "note": "latency is end-to-end per decision including tokenisation. The 4B figure is the shipped entry's measured 0.139 s on an RTX PRO 6000, not re-measured here."
+}

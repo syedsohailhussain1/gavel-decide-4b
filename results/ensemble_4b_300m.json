@@ -1,0 +1,69 @@
+{
+  "protocol": "4B = grouped 5-fold OOF keyed by item (unseen); 300M = zero-shot, no training. No sealed data anywhere.",
+  "n_items": 137,
+  "chance": 0.3436739659367396,
+  "single_4b_oof": 0.708029197080292,
+  "single_300m_zeroshot": 0.6423357664233577,
+  "combinations": {
+    "mix 0.3*4B+0.7*300M": 0.7883211678832117,
+    "mix 0.5*4B+0.5*300M": 0.7518248175182481,
+    "mix 0.7*4B+0.3*300M": 0.7299270072992701,
+    "log-prob sum": 0.7664233576642335,
+    "max-confidence": 0.7445255474452555
+  },
+  "best_combination": {
+    "name": "mix 0.3*4B+0.7*300M",
+    "accuracy": 0.7883211678832117
+  },
+  "oracle_pick_better_model": 0.8540145985401459,
+  "headroom_over_best_single": 0.14598540145985395,
+  "agreement": {
+    "n_agree": 81,
+    "agree_rate": 0.5912408759124088,
+    "accuracy_when_agree": 0.8395061728395061,
+    "n_disagree": 56,
+    "accuracy_4b_when_disagree": 0.5178571428571429
+  },
+  "per_type": {
+    "adequacy": {
+      "n": 12,
+      "acc_4b": 0.5833333333333334,
+      "acc_300m": 0.3333333333333333
+    },
+    "extraction": {
+      "n": 24,
+      "acc_4b": 0.8333333333333334,
+      "acc_300m": 0.7083333333333334
+    },
+    "fact": {
+      "n": 12,
+      "acc_4b": 0.8333333333333334,
+      "acc_300m": 0.8333333333333334
+    },
+    "intent": {
+      "n": 24,
+      "acc_4b": 0.7083333333333334,
+      "acc_300m": 0.875
+    },
+    "policy": {
+      "n": 12,
+      "acc_4b": 0.75,
+      "acc_300m": 0.3333333333333333
+    },
+    "routing": {
+      "n": 12,
+      "acc_4b": 0.4166666666666667,
+      "acc_300m": 0.9166666666666666
+    },
+    "sol": {
+      "n": 29,
+      "acc_4b": 0.6206896551724138,
+      "acc_300m": 0.3103448275862069
+    },
+    "tool_selection": {
+      "n": 12,
+      "acc_4b": 0.9166666666666666,
+      "acc_300m": 1.0
+    }
+  }
+}

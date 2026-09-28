@@ -1,0 +1,57 @@
+{
+  "protocol": "5 outer item folds; the 300M is zero-shot so only the mix weight is fitted, and it is chosen on 4 folds and scored on the 5th. No outer item was in the training set for the head that scored it.",
+  "n_items": 137,
+  "chance": 0.3436739659367396,
+  "always_first": 0.7956204379562044,
+  "always_last": 0.20437956204379562,
+  "4B_alone": 0.708029197080292,
+  "300m_prefixed_alone": 0.6861313868613139,
+  "blend_weight_chosen_blind": 0.7664233576642335,
+  "delta_vs_4B": 0.058394160583941535,
+  "per_fold_weight": [
+    {
+      "fold": 0,
+      "w_4b": 0.4,
+      "inner_acc": 0.7706422018348624
+    },
+    {
+      "fold": 1,
+      "w_4b": 0.5,
+      "inner_acc": 0.7889908256880734
+    },
+    {
+      "fold": 2,
+      "w_4b": 0.4,
+      "inner_acc": 0.7818181818181819
+    },
+    {
+      "fold": 3,
+      "w_4b": 0.4,
+      "inner_acc": 0.7636363636363637
+    },
+    {
+      "fold": 4,
+      "w_4b": 0.4,
+      "inner_acc": 0.7636363636363637
+    }
+  ],
+  "abstention_NOT_a_leaderboard_metric": {
+    "1.0": {
+      "accuracy_on_answered": 0.708029197080292,
+      "benchmark_accuracy": 0.708029197080292
+    },
+    "0.8": {
+      "accuracy_on_answered": 0.7727272727272727,
+      "benchmark_accuracy": 0.6181818181818182
+    },
+    "0.6": {
+      "accuracy_on_answered": 0.8170731707317073,
+      "benchmark_accuracy": 0.4902439024390243
+    },
+    "0.4": {
+      "accuracy_on_answered": 0.8545454545454545,
+      "benchmark_accuracy": 0.3418181818181818
+    }
+  },
+  "verdict": "prefixed 300M improves the blend"
+}

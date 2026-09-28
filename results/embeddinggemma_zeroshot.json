@@ -1,0 +1,77 @@
+{
+  "model": "google/embeddinggemma-300m",
+  "params": 302863104,
+  "protocol": "zero-shot, no probe, no training",
+  "n_items": 213,
+  "chance": 0.34272300469483563,
+  "scorers": {
+    "A cos(state,opt)": {
+      "accuracy": 0.5446009389671361,
+      "lift": 1.589041095890411,
+      "n": 213
+    },
+    "B cos(question,opt)": {
+      "accuracy": 0.3427230046948357,
+      "lift": 1.0000000000000002,
+      "n": 213
+    },
+    "C cos(state+q,opt)": {
+      "accuracy": 0.49765258215962443,
+      "lift": 1.4520547945205482,
+      "n": 213
+    },
+    "D contrastive": {
+      "accuracy": 0.5446009389671361,
+      "lift": 1.589041095890411,
+      "n": 213
+    }
+  },
+  "by_type_best_scorer": {
+    "extraction": {
+      "correct": 17,
+      "total": 24,
+      "acc": 0.7083333333333334
+    },
+    "fact": {
+      "correct": 10,
+      "total": 12,
+      "acc": 0.8333333333333334
+    },
+    "intent": {
+      "correct": 21,
+      "total": 24,
+      "acc": 0.875
+    },
+    "tool_selection": {
+      "correct": 12,
+      "total": 12,
+      "acc": 1.0
+    },
+    "opus": {
+      "correct": 20,
+      "total": 50,
+      "acc": 0.4
+    },
+    "sol": {
+      "correct": 17,
+      "total": 55,
+      "acc": 0.3090909090909091
+    },
+    "adequacy": {
+      "correct": 4,
+      "total": 12,
+      "acc": 0.3333333333333333
+    },
+    "policy": {
+      "correct": 4,
+      "total": 12,
+      "acc": 0.3333333333333333
+    },
+    "routing": {
+      "correct": 11,
+      "total": 12,
+      "acc": 0.9166666666666666
+    }
+  },
+  "contrast": "0.8B trained probe = 0.3333 vs 0.3427 chance; 4B trained probe = 0.7080"
+}

@@ -1,0 +1,79 @@
+{
+  "protocol": "grouped 5-fold OOF, folds keyed by item; identical architecture, recipe and seed at every point",
+  "trunk": "Qwen/Qwen3.5-0.8B-Base",
+  "cached_with_prefix_cache": false,
+  "recipe": {
+    "epochs": 60,
+    "lr": 0.0001,
+    "batch": 256,
+    "width": 512,
+    "seed": 20260924,
+    "folds": 5
+  },
+  "curve": [
+    {
+      "n_items": 1000,
+      "n_rows": 4072,
+      "n_eval_items": 1000,
+      "epochs": 60,
+      "accuracy": 0.233,
+      "chance": 0.24639999999999918,
+      "lift_over_chance": 0.9456168831168863,
+      "by_family": {
+        "adequacy": 0.23,
+        "adversarial": 0.26,
+        "extraction": 0.23,
+        "fact": 0.26,
+        "intent": 0.25,
+        "multi_hop": 0.2,
+        "ordinal": 0.16,
+        "policy": 0.25,
+        "routing": 0.24,
+        "tool_selection": 0.25
+      }
+    },
+    {
+      "n_items": 10000,
+      "n_rows": 40696,
+      "n_eval_items": 10000,
+      "epochs": 20,
+      "accuracy": 0.2483,
+      "chance": 0.24652000000000315,
+      "lift_over_chance": 1.0072205094921176,
+      "by_family": {
+        "adequacy": 0.268,
+        "adversarial": 0.246,
+        "extraction": 0.241,
+        "fact": 0.263,
+        "intent": 0.236,
+        "multi_hop": 0.254,
+        "ordinal": 0.216,
+        "policy": 0.242,
+        "routing": 0.253,
+        "tool_selection": 0.264
+      }
+    },
+    {
+      "n_items": 100000,
+      "n_rows": 406947,
+      "n_eval_items": 100000,
+      "epochs": 5,
+      "accuracy": 0.24765,
+      "chance": 0.24652650000005055,
+      "lift_over_chance": 1.0045573193954778,
+      "by_family": {
+        "adequacy": 0.2535,
+        "adversarial": 0.2489,
+        "extraction": 0.2487,
+        "fact": 0.251,
+        "intent": 0.2533,
+        "multi_hop": 0.2611,
+        "ordinal": 0.2131,
+        "policy": 0.2435,
+        "routing": 0.2539,
+        "tool_selection": 0.2495
+      }
+    }
+  ],
+  "note": "measured on self-generated data. It answers 'does more generated supervision help THIS head', not 'will it transfer to JevBench'. Transfer needs a held-out JevBench check."
+}

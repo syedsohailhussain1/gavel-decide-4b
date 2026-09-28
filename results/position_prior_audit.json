@@ -1,0 +1,33 @@
+{
+  "source": "D:/jevbench/datasets/public/*.jsonl, fields labels + expected",
+  "question": "is gold-at-position-0 a property of the task or of the public split?",
+  "trained_on": {
+    "n": 213,
+    "gold_first": 0.3051643192488263,
+    "gold_last": 0.3051643192488263,
+    "chance": 0.3235524256651017,
+    "always_first": 0.3051643192488263
+  },
+  "unseen": {
+    "n": 18,
+    "gold_first": 0.2777777777777778,
+    "gold_last": 0.1111111111111111,
+    "chance": 0.24722222222222223,
+    "always_first": 0.2777777777777778
+  },
+  "all": {
+    "n": 231,
+    "gold_first": 0.30303030303030304,
+    "gold_last": 0.29004329004329005,
+    "chance": 0.3176046176046175,
+    "always_first": 0.30303030303030304
+  },
+  "verdict": "artifact of the public split - collapses to chance on unseen items",
+  "real_numbers_nothing_fitted": {
+    "mined_procedures_shuffled": 0.5493,
+    "300m_zero_shot_prefixed": 0.5915,
+    "4b_trained_head": 0.708,
+    "chance": 0.3427
+  },
+  "the_0.8310": "was always-pick-option-0; it is a number about the dataset, not about a model"
+}
