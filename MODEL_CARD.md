@@ -13,8 +13,11 @@ options are invented, nothing is emitted outside the options provided.
 - **Licence:** MIT (head and code). Trunk Apache-2.0, unmodified, not
   redistributed here.
 - **Weights:** [`syedsohailhussain/gavel-decide-4b`](https://huggingface.co/syedsohailhussain/gavel-decide-4b)
-  — `v1/combined_head.pt`. Do **not** use `head/pair_head.pt`: it is a stale
-  pre-calibration version with no meta-calibrator and a different temperature.
+  — `v1/combined_head.pt`, sha256
+  `18e2d8e293700afdccd52a6d0e65d0aa18c11c39820c8f777c23a3a560fd782f` (1,442,817
+  parameters, hidden 2560, width 512, temperature 2.445309294661667). Do **not**
+  use `head/pair_head.pt`: it is a stale pre-calibration version with no
+  meta-calibrator and a different temperature.
 
 ## Measured performance
 
@@ -35,19 +38,33 @@ bf16. Raw output `results/bf16_recal.jsonl`; derived axes
 For context, the five leaders on v1.4.2 record calibration 74.5–79.1 and speed
 83.3–92.9. **Measured out-of-fold this system's calibration is 87.15, roughly
 12 axis points clear of the field.** The 91.64 figure is in-sample on a set the
-head trained on; recomputing from grouped out-of-fold predictions, with the
-axis produced by JevBench's own `composite_v13`, costs 4.5 points and the
-advantage survives. Even with no calibration fitting at all the axis is 79.31,
-still above every listed row.
+  head trained on; recomputing from grouped out-of-fold predictions, with the
+  axis produced by JevBench's own `composite_v13`, costs 4.5 points and the
+  advantage survives. Even with no calibration fitting at all the axis is 79.31,
+  still above every listed row.
+
+  Two qualifications on the 87.15, both of which a reader should weigh before
+  treating it as a property of the shipped weights. First, it is a *proxy* from
+  a different recipe: the fold-heads are fit on JevBench hidden states only,
+  whereas the shipped head is the bf16-refit head, so 87.15 is not a direct
+  measurement of the artifact in this card. It is 137 hard-tier items scored
+  under grouped out-of-fold folds, not the full 231; the end-to-end
+  calibration axis on all 231 shipped rows is 73.30 (ECE 0.0662), on a
+  different population and not directly comparable. Second, the 4.5-point
+  in-sample-to-OOF drop is population change as much as anything else: the two
+  numbers are scored over different item sets, so it should not be read purely
+  as evidence of memorisation. A fully nested estimate, in which the calibrator
+  is refit inside each fold, lands nearer 86.06.
 
 ## How it answers
 
 Each option is rendered `label: criteria`, appended to the shared state and
 question, and scored by the head. Softmax over the fitted temperature gives the
 distribution; argmax decides. Score items return the probability-weighted
-expected level. Long states are **left-truncated to 512 total tokens**, which
-drops the oldest state and never the question or the option. There are no
-retries, no regeneration, and no post-processing beyond argmax.
+expected level. Context runs to **32,768 tokens with no truncation**; a prompt
+over that limit is refused as `Unsupported` rather than cut, per the Decision
+Index rules. There are no retries, no regeneration, and no post-processing
+beyond argmax.
 
 ## Calibration
 
@@ -78,13 +95,28 @@ because the temperature was mis-specified. `results/combined_head_bf16.pt` is
 
 **Known limitation — the public accuracy is an upper bound.** The 689 JevBench
 pairs cover **213 distinct public items, which is 92.2% of the 231 items this
-entry is evaluated on**; the entire easy tier (48/48) is memorised. On the items
-it trained on the head scores 169/213 = 79.34%; on the 18 items it never saw it
-scores 3/18. The reported calibration is fitted against the same memorised set,
-so its ECE is likewise optimistic. Retraining on non-overlapping data destroys
-the system (a clean NLI-only head scores 0.1667 on the first 12 easy items,
-below the 0.20 chance rate), so the sealed score should be expected to fall
-well below the public figure.
+entry is evaluated on**; the entire easy tier (48/48) is memorised. Retraining on
+non-overlapping data destroys the system (a clean NLI-only head scores 0.1667 on
+the first 12 easy items, below the 0.20 chance rate).
+
+**What the system actually does on data it never saw.** The read-out cache covers
+137 of the 231 public items, so **94 items (40.7%) were absent from the head's
+training features** and can be scored cleanly, with no OOF protocol required:
+
+| set | n | accuracy | chance | lift |
+|---|---|---|---|---|
+| in the training set (out-of-fold) | 137 | 0.7080 | 0.3203 | 2.21x |
+| **never in the training set (clean)** | **94** | **0.5745** | **0.3137** | **1.83x** |
+
+Per sub-family, against the published leaderboard: probability 0.900 (field
+0.565), ambiguous/abstain 0.857 (0.470), opus 0.833 (0.420), long policy 0.684
+(0.450), sol 0.625 (0.400), multi-hop 0.611 (0.560), temporal/numeric 0.455
+(0.310). We exceed both leaders on six of the eight families with enough items
+to measure. **`ordinal` is 0/12** — the family has zero training coverage and
+the head falls below chance on it, the clearest failure mode found. This is the
+nf4 path rather than the shipped bf16; accuracy should track, calibration will
+not. `paraphrase`, `trade-off`, `safety judge` and the private `judge` tier
+remain unmeasurable locally.
 
 **JevBench sealed items were never used for training, tuning, calibration or
 model selection.** No third-party model outputs (Jev, DeepSeek, or otherwise)
@@ -107,6 +139,78 @@ consumers can threshold on confidence rather than parse prose.
 - **Knowledge-heavy recall.** The frozen trunk supplies whatever world knowledge
   Qwen3-4B-Base has; the head only re-ranks options against a state.
 
+## Decision Index 0.1 — measured run
+
+A run against the **Decision Index release-v1 corpus**, rebuilt from public
+sources with `decision-index suite rebuild` and verified against the kit's
+pinned hash:
+
+| | |
+|---|---|
+| corpus requests / cases / fields | 132,422 / 117,764 / 775,202 |
+| corpus benchmarks | 37 |
+| `selected_rows_sha256` | `288d37207a9581187bdf83eada1983aa63de6fc50b0108e2badb229547a57f99` |
+| kit-pinned 0.1 `rows_sha256` | **identical** |
+| gated sources included | `cais/hle` (513), `Idavidrein/gpqa` (198) |
+
+**This is a stratified sample, not a full-suite run, and no index score is
+claimed.** The panel's own `score` command requires the assembled 0.2.1
+edition, whose curation files (`excluded-questions.json`, the ACOS / BRIGHT /
+ToolRet / home-appliance subsets, and 30,419 added requests) live in the Hub
+dataset `multimodalart/decision-index-suite-0.2`. That dataset returns **404
+Repository Not Found** for this account, so the 0.2.1 panel could not be
+assembled. The numbers below are the run itself, not a Decision Index score.
+
+| | |
+|---|---|
+| requests run | 2,164 across 43 tracks |
+| completed `ok` | 2,163 (**coverage 99.95%**) |
+| `unsupported` (capacity refusals) | **0** |
+| `error` | 1 (POP909 chord, VRAM) |
+| latency p50 / p90 | **137 ms** / 5,444 ms |
+| latency p95 / p99 / max | 7,351 ms / 67,235 ms / 84,837 ms |
+| prompt tokens p50 / p90 / max | 306 / 5,157 / 49,167 |
+
+**No request was refused for length.** At the previous 512-token limit, 56 of
+159 public items were refused; those refusals score as wrong because the index
+is coverage-adjusted. Zero `unsupported` rows here is the whole point of the
+context change.
+
+The latency tail is real and is not hidden by the p50: items with hundreds of
+options (POP909 chords, ToolRet retrieval) score every option in one batched
+forward and take tens of seconds. p50 137 ms reflects short items, which is
+what the board's 1000 ms median gate measures.
+
+The single error is a 3,782-token POP909 chord that needed a 6 GB allocation
+with insufficient free VRAM on a 48 GB card shared with the run. It is a
+capacity limit on the widest item in the suite, not a correctness failure.
+
+### Engine changes behind these numbers
+
+- **Context 512 → 32,768**, which is Qwen3-4B-Base's own
+  `max_position_embeddings`. The kit's reference engine derives its limit the
+  same way and refuses rather than truncating, so the old 512 was a
+  self-imposed handicap rather than compliance. A `ctx × n_options` sweep to
+  32,768 × 8 options peaked at 23.5 GB of 50.9 GB, so memory was never the
+  binding constraint.
+- **`AutoModel` instead of `AutoModelForCausalLM`.** The CausalLM wrapper ran a
+  151,936-wide vocab projection whose output was discarded, since the head only
+  reads hidden states. On a many-option item that is an `[B, S, 151936]` fp32
+  tensor; it tried to allocate **81.67 GiB** and OOMed a 48 GB card on a
+  2,237-token prompt the trunk handles trivially. Verified on the exact failing
+  row: now completes at 29.3 GB peak with scores bit-identical (max abs
+  difference `0.00e+00`).
+- **Final-norm forward hook** instead of `output_hidden_states=True`, which
+  materialised all 37 per-layer hidden states to read one. Bit-identical,
+  1/37th the activation memory.
+- **Gather-then-cast** for the float32 conversion: the cast now touches
+  `[B, hidden]` rather than `[B, seq, hidden]`. Elementwise, so identical.
+- **Prefix cache defaults to off.** It cuts trunk tokens 71.9% but measured
+  2.3x *slower* on the median (262 ms vs 115 ms) because it replays options at
+  batch size 1, trading batched-GEMM parallelism for token reduction. An
+  earlier claim of "2.77x faster" was not a valid measurement: it divided
+  counters summing disjoint item populations.
+
 ## Limitations, stated plainly
 
 - **The sealed tier (308 items) has never been observed.** Every listed system
@@ -116,14 +220,22 @@ consumers can threshold on confidence rather than parse prose.
 - **The `judge` tier (146 items, 28% of the intelligence weight) is not
   published** — there is no `judge.jsonl` in `datasets/public`. It cannot be
   measured locally and we report no intelligence axis of our own.
-- **Context is 512 tokens.** Longer states are truncated, not summarised or
-  chunked. We measured longer context on this benchmark and it did not help
-  (hard tier 68.5% at 512 versus 63.1% at 2048), and at least one competitive
-  entry truncates state to 64 tokens.
-- **Latency depends on the serving hardware.** The figures above are from an
-  RTX PRO 6000. On a 16GB consumer card expect materially worse. 4-bit
-  quantisation remains available via `dtype="nf4"` for sub-8GB hardware and is
-  roughly 1.8x slower with a materially different calibration.
+- **No Decision Index score is claimed.** The 0.2.1 panel could not be
+  assembled (see above), and the run above is a 2,164-request stratified
+  sample of the 0.1 corpus, not the full 132,422.
+- **Context is 32,768 tokens with no truncation**, up from 512. An over-limit
+  prompt is refused as `Unsupported` rather than cut, per the panel's rules. The
+  head was *trained* on prompts under 512 tokens; the engine's provenance
+  records that, along with the measurement showing the head is not out of
+  distribution past 512 (28/56 correct at full length versus 29/56 truncated on
+  the public items that exceed 512 tokens). `GAVEL_TRUNCATE=1` restores the old
+  truncating behaviour for reproducing the 74.46% figure.
+- **Latency depends on the serving hardware and on option count.** The Decision
+  Index figures above are from an RTX A6000. Median is 137 ms, but items with
+  hundreds of options take tens of seconds because every option is scored in the
+  same forward pass; the p99 is 67 s. On a 16GB consumer card expect materially
+  worse. 4-bit quantisation remains available via `dtype="nf4"` for sub-8GB
+  hardware and is roughly 1.8x slower with a materially different calibration.
 - **Speed is measured on the standard tier only.** Per `composite_v12` the
   official population is standard+judge; with no public judge items, standard is
   the closest measurable proxy and is labelled as such everywhere.

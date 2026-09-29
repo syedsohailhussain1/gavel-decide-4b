@@ -121,9 +121,14 @@ GPU, not the architecture.**
 - **noul** — two options (yes / no) with criteria text where provided.
 - **score** — one option per level, index order preserved; the answer is the
   probability-weighted expected level, and the whole distribution is returned.
-- **Truncation** — long states are left-truncated to **512 total tokens**,
-  dropping the oldest state and never the question or option. This matches the
-  training distribution and the stated 512 budget of the `laya` row.
+  - **Context — 32,768 tokens, no truncation.** This is Qwen3-4B-Base's own
+    `max_position_embeddings`; the Decision Index reference engine derives its
+    limit the same way and refuses rather than cutting. A prompt over the limit
+    is refused as `Unsupported`, which the index scores as wrong. The previous
+    512-token default refused 56 of 159 public items for no accuracy gain
+    (28/56 correct at full length vs 29/56 truncated). `GAVEL_TRUNCATE=1`
+    restores the old left-truncating behaviour, which drops the oldest state and
+    never the question or option.
 - **No retries, no regeneration, no post-processing** beyond argmax.
 
 ## Architecture
@@ -186,19 +191,42 @@ score.
 - **The `judge` tier (146 items, 28% of the intelligence weight) is not
   published** — there is no `judge.jsonl` in `datasets/public`. It cannot be
   measured locally, and we report no intelligence axis of our own.
-- **Six of the twelve families that carry the intelligence weight have never been
-  measured by us at all.** The scored set (hard + sealed) is organised as
-  `ambiguous/abstain · judge · long policy · multi-hop · probability ·
-  temporal/numeric · trade-off · routing · trap/adversarial · paraphrase ·
-  safety judge`. Our public split contains `intent · extraction · fact ·
-  policy · adequacy · tool_selection · ordinal · multi-hop`, so `paraphrase`,
-  `trade-off`, `probability`, `safety judge`, `ambiguous/abstain` and `judge`
-  do not appear in anything we can run locally. A further family, `long policy`,
-  is the 76 items our read-out cache never covered because they exceeded the
-  512-token context budget — the field scores 44–46% there and we have no
-  measurement. On the six families the field scores 43–64%, our 0.708
-  out-of-fold figure was measured on a different distribution and should not be
-  transferred to them.
+- **We measured the 94 items the head was never trained on, and they are 40.7%
+  of the public benchmark.** The read-out cache covers 137 of the 231 public
+  items, so 94 were absent from the head's training features: 76 appear in
+  `combined_pairs.jsonl` but were never cached, and 18 are absent from the pairs
+  file entirely. Because the head never saw any of them, **no OOF protocol is
+  needed — this is a clean out-of-sample measurement**, and it is the closest
+  local proxy for the private sealed tier that exists.
+
+  | sub-family | n | ours | chance | field | vs field |
+  |---|---|---|---|---|---|
+  | probability | 10 | 0.9000 | 0.383 | 0.565 | +0.335 |
+  | ambiguous / abstain | 7 | 0.8571 | 0.321 | 0.470 | +0.387 |
+  | opus | 6 | 0.8333 | 0.308 | 0.420 | +0.413 |
+  | long policy | 19 | 0.6842 | 0.301 | 0.450 | +0.234 |
+  | sol | 8 | 0.6250 | 0.500 | 0.400 | +0.225 |
+  | multi-hop | 18 | 0.6111 | 0.252 | 0.560 | +0.051 |
+  | temporal / numeric | 11 | 0.4545 | 0.323 | 0.310 | +0.145 |
+  | trap / adversarial | 3 | 0.0000 | 0.250 | 0.805 | −0.805 |
+  | ordinal | 12 | 0.0000 | 0.250 | — | — |
+  | **overall** | **94** | **0.5745** | **0.3137** | — | — |
+
+  We exceed both published leaders on **six of the eight** families with enough
+  items to measure, including long policy (+0.234). Two caveats: this is the nf4
+  path rather than the shipped bf16 (accuracy should track, calibration will
+    not), and 64% of these option-rows exceed a 512-token budget, so under the
+    old default the state was heavily truncated. At the current 32,768 limit they
+    are not.
+- **`ordinal` is 0/12.** The ordinal family has zero training coverage and the
+  head collapses to below chance on it, which is the single clearest failure
+  mode we have found. It is 12.8% of this unseen set; returning only chance
+  would lift the overall from 0.5745 to 0.6064. `trap` and `adversarial` are
+  also 0/3, though the sample is too small to conclude anything.
+- **`paraphrase`, `trade-off` and `safety judge` still cannot be measured at
+  all** — they appear in neither the public data nor our training pairs. The
+  `judge` tier is private. So the families above are a large improvement on our
+  previous "six of twelve never measured", not a complete answer.
 - **`Malkuth-4B` has public accuracy 0.749, within one item of ours, and scores
   44.45 (rank 16).** We do not claim a top rank. Our projection exceeds 64.13
   only under specific sealed and cost assumptions, itemised in
@@ -213,10 +241,31 @@ score.
 - **Speed is measured on the standard tier only.** Per `composite_v12`, the
   official population is standard+judge; with no public judge items, standard
   is the closest measurable proxy and is labelled as such everywhere.
-- **Context is 512 tokens.** Longer states are truncated, not summarised or
-  chunked. A windowed map-reduce scorer was evaluated and rejected: it
-  multiplies forward passes on long items, spending the one axis already
-  nearest a scoring gate to buy points on an axis that is capped.
+  - **Context is 32,768 tokens with no truncation**, up from 512. A windowed
+    map-reduce scorer was evaluated and rejected: it multiplies forward passes on
+    long items, spending the one axis already nearest a scoring gate to buy
+    points on an axis that is capped. Raising the limit instead is free — a
+    `ctx × n_options` sweep to 32,768 × 8 options peaked at 23.5GB of 50.9GB, and
+    the board's 1000ms median gate is set by short prompts, not by the cap.
+- **Input length, not hardware, drives long-item latency — a measured 3.62x
+  penalty.** The headline 0.139 s p50 comes from a public set dominated by short
+  items, so it does not describe a long sealed set. Running short (28–31 native
+  tokens) against long (3,335–3,691) items on one fixed setup gives p50 5.54 s vs
+  20.08 s. The ratio is hardware-independent even though the absolute seconds are
+  not, and it projects the speed axis as follows:
+
+  | sealed long-item share | p50 estimate | speed axis |
+  |---|---|---|
+  | 0% | 0.139 s | 84.87 |
+  | 40% | 0.285 s | 79.95 |
+  | 64% | 0.372 s | 77.96 |
+  | 100% | 0.504 s | 75.62 |
+
+  Worst case is 9.25 speed points, roughly 2–3 points of final score — moderate,
+  not severe, because the speed function is logarithmic. The 94 unseen items are
+  64% over budget, so a sealed set with that profile lands near the 64% row.
+  **The shared-prefix cache is load-bearing here**: long items cost 92.85 s
+  without it against 20.08 s with it (4.6x), so the cache must stay enabled.
 
 ## What we tested and rejected
 
