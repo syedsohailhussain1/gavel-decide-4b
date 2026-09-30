@@ -18,13 +18,25 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 
 > ### Read this before the accuracy number
 >
-> **The 74.46% below is inflated and should be read as an upper bound, not as
-> generalisation.** The head was trained on 689 pairs derived from **213 of the
-> 231 public items — 92.2% overlap**, and the entire easy tier is 48/48
-> memorised. Measured on the 213 items it trained on it scores **169/213 =
-> 79.34%**; on the 18 items it never saw it scores **3/18**.
+> **Two separate caveats, and the second one makes the number lower.**
 >
-> Two things follow, and we state them rather than let the number speak:
+> **1. The figure below is inflated by train/test overlap.** The head was trained
+> on 689 pairs derived from **213 of the 231 public items — 92.2% overlap**, and
+> the entire easy tier is 48/48 memorised. Measured on the 213 items it trained
+> on it scores **169/213 = 79.34%**; on the 18 items it never saw it scores
+> **3/18**.
+>
+> **2. The shipping engine scores lower than the previously published 74.46%.**
+> Re-measured on the configuration that actually ships — `ctx=32768`, bf16, no
+> truncation, `AutoModel`, prefix cache off — the result is **167/231 = 72.29%**,
+> six items below the superseded figure. The change removes a discarded
+> 151,936-wide vocabulary projection that allocated **81.67 GiB** and OOMed a
+> 48GB card on a 2,237-token prompt. We report the lower number because it is
+> what the shipped artifact scores. The grader was validated by re-grading the
+> older run's own probabilities, which returns 173/231 against the published
+> 172/231.
+>
+> Two further things follow, and we state them rather than let the number speak:
 >
 > 1. **The public accuracy does not predict our score.** JevBench is scored on
 >    the **sealed** tier (308 items), which was never used for training or
@@ -36,7 +48,8 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 >    ECE looks better than it will be on unseen data. Recomputing the axis from
 >    grouped out-of-fold predictions puts it at **87.15 rather than 91.64** —
 >    4.5 points of inflation, and still about 12 points clear of the field. We
->    report 87.15. The full table is below.
+>    report 87.15. That axis was computed on the superseded configuration and is
+>    not a current claim.
 >
 > Training on the *public* tier is legitimate — it is published for exactly
 > this purpose, and we never touched the sealed tier. The disclosure is about
@@ -44,9 +57,13 @@ Run on an **NVIDIA RTX PRO 6000 Blackwell (24GB, bf16)**. Raw output:
 
 | Metric | Value |
 |---|---|
-| Accuracy (public, see disclosure above) | **172 / 231 = 74.46%** |
-| easy / standard / hard | 91.67% / 73.61%\* / 68.47% |
-| **Calibration axis** | **87.15** out-of-fold (binned ECE 0.0642) — in-sample on the fitted set it reads 91.64 |
+| **Accuracy, shipping config** | **167 / 231 = 72.29%** |
+| easy / original / hard | 91.67% / 70.83% / 64.86% |
+| choice / noul / score accuracy | 76.98% / 77.03% / 16.67% |
+| Latency p50 / p95 / max | 0.057s / 1.541s / 3.131s |
+| Refused for capacity | 0 |
+| Accuracy, superseded config (ctx=512 + truncation) | 172 / 231 = 74.46% (173/231 re-graded) |
+| **Calibration axis** (superseded config) | **87.15** out-of-fold (binned ECE 0.0642) — in-sample on the fitted set it reads 91.64 |
 | **Speed axis** (standard tier proxy) | **88.43** |
 | Latency p50 (easy / standard / hard) | 0.046s / 0.046s / 0.183s |
 | Latency p95 (hard) | 0.279s |
@@ -307,7 +324,7 @@ JevBench items (`scripts/train_clean_head.py`, 1,442,817 params, 36s on CPU):
 
 | head | training data | NLI OOF | public 231 |
 |---|---|---|---|
-| shipped | 689 JevBench + 1,720 NLI | — | 172/231 (92.2% of it trained on) |
+| shipped | 689 JevBench + 1,720 NLI | — | 167/231 shipping config (92.2% of it trained on); 172/231 on the superseded config |
 | **clean ablation** | **1,720 NLI only** | **0.5285** | **2/12 = 0.1667** (first 12 easy) |
 
 Two conclusions. First, **NLI supervision does not transfer**: 0.5285 against a

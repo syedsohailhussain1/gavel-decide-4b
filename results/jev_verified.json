@@ -1,0 +1,108 @@
+{
+  "population": "231 public JevBench items (48 easy + 72 original + 111 hard)",
+  "hardware": "NVIDIA A40 46GB, compute capability 8.6, 503GB RAM",
+  "engine_config": {
+    "ctx": 32768,
+    "dtype": "bf16",
+    "truncation": false,
+    "loader": "AutoModel (no lm_head)",
+    "prefix_cache": false,
+    "trunk": "Qwen/Qwen3-4B-Base",
+    "head": "v1/combined_head.pt",
+    "head_sha256": "18e2d8e293700afdccd52a6d0e65d0aa18c11c39820c8f777c23a3a560fd782f"
+  },
+  "grader_validation": {
+    "method": "the same grader was applied to the OLD run's recorded probabilities to confirm it reproduces the published figure",
+    "old_probs_graded_by_this_grader": "173/231",
+    "published_figure": "172/231",
+    "verdict": "grader agrees within 1 item, so the new number is comparable to the published one"
+  },
+  "new_config": {
+    "n": 231,
+    "correct": 167,
+    "pct": 72.29,
+    "by_tier": {
+      "easy": {
+        "correct": 44,
+        "n": 48,
+        "pct": 91.67
+      },
+      "hard": {
+        "correct": 72,
+        "n": 111,
+        "pct": 64.86
+      },
+      "original": {
+        "correct": 51,
+        "n": 72,
+        "pct": 70.83
+      }
+    },
+    "by_type": {
+      "choice": {
+        "correct": 107,
+        "n": 139,
+        "pct": 76.98
+      },
+      "noul": {
+        "correct": 57,
+        "n": 74,
+        "pct": 77.03
+      },
+      "score": {
+        "correct": 3,
+        "n": 18,
+        "pct": 16.67
+      }
+    }
+  },
+  "old_config_same_grader": {
+    "n": 231,
+    "correct": 173,
+    "pct": 74.89,
+    "by_tier": {
+      "easy": {
+        "correct": 44,
+        "n": 48,
+        "pct": 91.67
+      },
+      "hard": {
+        "correct": 76,
+        "n": 111,
+        "pct": 68.47
+      },
+      "original": {
+        "correct": 53,
+        "n": 72,
+        "pct": 73.61
+      }
+    },
+    "by_type": {
+      "choice": {
+        "correct": 107,
+        "n": 139,
+        "pct": 76.98
+      },
+      "noul": {
+        "correct": 63,
+        "n": 74,
+        "pct": 85.14
+      },
+      "score": {
+        "correct": 3,
+        "n": 18,
+        "pct": 16.67
+      }
+    }
+  },
+  "delta_items": -6,
+  "delta_points": -2.6,
+  "latency_ms": {
+    "p50": 56.89706187695265,
+    "p90": 1280.0973849371076,
+    "p95": 1541.2029717117548,
+    "max": 3131.146462634206
+  },
+  "refused": 0,
+  "errors": 0
+}

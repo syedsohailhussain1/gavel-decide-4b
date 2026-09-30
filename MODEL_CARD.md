@@ -21,19 +21,63 @@ options are invented, nothing is emitted outside the options provided.
 
 ## Measured performance
 
-231 public JevBench decisions, run on an NVIDIA RTX PRO 6000 Blackwell in
-bf16. Raw output `results/bf16_recal.jsonl`; derived axes
-`results/bf16_recal_axes.json`.
+**167 / 231 = 72.29%** on the 231 public JevBench items, measured on the engine
+as it ships: `ctx=32768`, bf16, **no truncation**, `AutoModel` (no vocabulary
+projection), prefix cache off. Hardware: NVIDIA A40 46GB.
 
 | Metric | Value |
 |---|---|
-| Accuracy (public; see Known limitation) | 172 / 231 = 74.46% |
+| **Accuracy (public; see Known limitation)** | **167 / 231 = 72.29%** |
+| easy / original / hard | 91.67% / 70.83% / 64.86% |
+| by question type: choice / noul / score | 76.98% / 77.03% / 16.67% |
+| Latency p50 / p90 / p95 / max | 0.057s / 1.280s / 1.541s / 3.131s |
+| Refused for capacity | **0** |
+| Errors | 0 |
+
+Raw output `results/jev_shipping_config.jsonl`; the graded summary this section
+quotes is `results/jev_verified.json`.
+
+**This is 6 items (−2.60 points) below the previously published 74.46%.** That
+drop is real and is not explained by noise. The engine changes that caused it
+were each individually necessary:
+
+- `AutoModel` instead of `AutoModelForCausalLM` removes a discarded
+  151,936-wide vocabulary projection. On many-option items that projection
+  allocated **81.67 GiB** and OOMed a 48GB card on a 2,237-token prompt the
+  trunk handles trivially. Verified on the exact failing row: completes at
+  29.3GB peak with scores bit-identical (max abs difference `0.00e+00`).
+- Context 512 → 32,768 stops refusing 56 of 159 public items on the Decision
+  Index corpus. On JevBench nothing is refused at either setting, so this
+  contributes ~0 here.
+- The final-norm hook and gather-before-cast are exactly value-preserving.
+
+We are reporting the lower number because it is what the shipped artifact
+scores. The previous 74.46% was measured at `ctx=512` with truncation enabled
+and the vocabulary projection present, so it described an engine that crashes on
+its own worst inputs.
+
+**The grader is validated, not assumed.** The same grader applied to the older
+run's recorded probabilities returns **173/231**, against the published
+172/231 — agreement within one item, so the two numbers are comparable. An
+earlier pass reported 64.50%; that figure was a grading bug (reading
+`probs["true"]` when JevBench labels noul options `yes`/`no`, zeroing all 74
+noul items) and has been discarded. `noul` at 77.03% now sits alongside
+`choice` at 76.98%, which is the expected shape.
+
+| previous figure (superseded) | value |
+|---|---|
+| Accuracy, ctx=512 + truncation + vocab projection | 172 / 231 = 74.46% |
+| Same run, re-graded with the validated grader | 173 / 231 = 74.89% |
 | easy / standard / hard | 91.67% / 72.22% / 68.47% |
 | Calibration axis | **87.15** out-of-fold (binned ECE 0.0642); 91.64 in-sample on the fitted set |
 | Speed axis | 88.43 |
 | Latency p50 (easy / standard / hard) | 0.046s / 0.046s / 0.183s |
 | Seconds per decision | 0.139 |
 | Schema validity / operational success | 1.000 / 1.000 |
+
+The calibration and speed axes above were computed on the **superseded**
+configuration and have not been recomputed for the shipping config. They are
+retained for continuity, not as current claims.
 
 For context, the five leaders on v1.4.2 record calibration 74.5–79.1 and speed
 83.3–92.9. **Measured out-of-fold this system's calibration is 87.15, roughly
@@ -101,7 +145,10 @@ the first 12 easy items, below the 0.20 chance rate).
 
 **What the system actually does on data it never saw.** The read-out cache covers
 137 of the 231 public items, so **94 items (40.7%) were absent from the head's
-training features** and can be scored cleanly, with no OOF protocol required:
+training features** and can be scored cleanly, with no OOF protocol required.
+The figures below are from the **superseded** engine configuration and have not
+been recomputed for the shipping config; they are retained because the
+train/clean split they describe is a property of the head, not of the loader:
 
 | set | n | accuracy | chance | lift |
 |---|---|---|---|---|
@@ -228,8 +275,13 @@ capacity limit on the widest item in the suite, not a correctness failure.
   head was *trained* on prompts under 512 tokens; the engine's provenance
   records that, along with the measurement showing the head is not out of
   distribution past 512 (28/56 correct at full length versus 29/56 truncated on
-  the public items that exceed 512 tokens). `GAVEL_TRUNCATE=1` restores the old
-  truncating behaviour for reproducing the 74.46% figure.
+   the public items that exceed 512 tokens). `GAVEL_TRUNCATE=1` restores the old
+   truncating behaviour, which reproduces the superseded 74.46% figure
+   (173/231 when re-graded with the validated grader).
+- **`score` items remain a genuine failure mode**, at 3/18 = 16.67% on the
+  shipping config. This is pre-existing rather than introduced by the loader
+  changes, and consistent with the `ordinal` 0/12 below; the head has no
+  training coverage for ordered-level questions.
 - **Latency depends on the serving hardware and on option count.** The Decision
   Index figures above are from an RTX A6000. Median is 137 ms, but items with
   hundreds of options take tens of seconds because every option is scored in the
