@@ -11,23 +11,42 @@ as Unsupported (Decision Index rule "no truncation").
 
 This was raised 512 -> 32768 on measured evidence, not caution:
 
-  * 512 -> 4096: 56/159 public JevBench items exceed 512 tokens (max 3691).
-    Full-length scored 28/56 vs 29/56 truncated -- one item, n=56, i.e. the head
-    is not out of distribution past 512. The 512 gate was refusing 24% of items
-    for no accuracy reason, and refusals cost coverage because the index scores
-    raw x answered/requests.
+  * 512 -> 4096: 56/159 public JevBench items exceed 512 tokens (max 3691), and
+    a first pass measured 28/56 correct at full length vs 29/56 truncated -- one
+    item on n=56, which read as "no accuracy cost". The 512 gate was refusing
+    24% of items, and refusals cost coverage because the index scores
+    raw x answered/requests. See the ACCURACY COST section below: that
+    one-item reading was misleading, because the 56 are dominated by choice
+    items, which this head answers identically either way.
   * 4096 -> 32768: a measured ctx x n_options sweep on the A6000 (50.9GB) found
     NO OOM anywhere up to 32768 tokens x 8 options, peaking at 23.5GB. Memory is
     not the ceiling. Latency at the full 32768 is ~7-8s, but the board's 1000ms
     gate is on the MEDIAN, which short prompts set; only genuinely long items
     pay, and refusing them instead would cost far more in coverage.
 
-So the longest context the model allows is also the highest-scoring choice, and
-it is free for the median. `dtype=bf16` is the default on adequate VRAM (the
-published numbers used nf4, which only exists to fit <8GB cards and is slower).
-The head was trained on <=512-token prompts; that is recorded in the engine's
-provenance rather than papered over, with the measurements above as evidence
-that it transfers.
+So the longest context the model allows is also the highest-coverage choice, and
+it is close to free for the median.
+
+ACCURACY COST, measured afterwards on all 231 public JevBench items. Raising the
+limit is NOT free for accuracy, and the cost is type-specific:
+
+    choice items   0 lost of 139   (bit-identical either way)
+    score items    0 lost of 18
+    noul, state <= 512 tok    4 lost of 65   (6.2%)
+    noul, state  > 512 tok    3 lost of 9   (33.3%)
+
+The 33.3% is the real signal: the old 512 default ran with truncation ON, so on
+long items it was reading a cut state. It now reads the whole state and gets
+noul items wrong more often. An earlier draft of this docstring claimed the
+head was "not out of distribution past 512" on the strength of a 28/56 vs 29/56
+measurement; that measurement was dominated by choice items and does not
+generalise to noul. The 32,768 limit is kept because a refused request counts
+as wrong under coverage adjustment -- a trade of some long-noul accuracy for
+much higher coverage, not a free win.
+
+The head was trained on <=512-token prompts; the engine's provenance records
+that. `dtype=bf16` is the default on adequate VRAM (the published numbers used
+nf4, which only exists to fit <8GB cards and is slower).
 
 Follows the laya_local adapter contract: __init__ kwargs, load(), run(task)
 -> DecisionResult, reserve_estimate(). No edits to the JevBench repo.

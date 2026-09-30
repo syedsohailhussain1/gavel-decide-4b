@@ -37,24 +37,59 @@ projection), prefix cache off. Hardware: NVIDIA A40 46GB.
 Raw output `results/jev_shipping_config.jsonl`; the graded summary this section
 quotes is `results/jev_verified.json`.
 
-**This is 6 items (−2.60 points) below the previously published 74.46%.** That
-drop is real and is not explained by noise. The engine changes that caused it
-were each individually necessary:
+**This is 6 items (−2.60 points) below the previously published 74.46%.** The
+drop is real and is not noise. **All 6 lost items are `noul` items, and the loss
+is confined to that one question type:**
 
-- `AutoModel` instead of `AutoModelForCausalLM` removes a discarded
-  151,936-wide vocabulary projection. On many-option items that projection
-  allocated **81.67 GiB** and OOMed a 48GB card on a 2,237-token prompt the
-  trunk handles trivially. Verified on the exact failing row: completes at
-  29.3GB peak with scores bit-identical (max abs difference `0.00e+00`).
-- Context 512 → 32,768 stops refusing 56 of 159 public items on the Decision
-  Index corpus. On JevBench nothing is refused at either setting, so this
-  contributes ~0 here.
-- The final-norm hook and gather-before-cast are exactly value-preserving.
+| type | old config | shipping config | delta |
+|---|---|---|---|
+| choice | 107/139 (76.98%) | 107/139 (76.98%) | **0** |
+| noul | 63/74 (85.14%) | 57/74 (77.03%) | **−6** |
+| score | 3/18 (16.67%) | 3/18 (16.67%) | **0** |
 
-We are reporting the lower number because it is what the shipped artifact
-scores. The previous 74.46% was measured at `ctx=512` with truncation enabled
-and the vocabulary projection present, so it described an engine that crashes on
-its own worst inputs.
+`choice` and `score` are bit-identical between the two configurations. That
+matters, because it isolates the cause: `choice` exercises the same forward pass
+as `noul`, so the loss is **not** attributable to the loader change.
+
+**What the loader change did, and what it did not.** `AutoModel` instead of
+`AutoModelForCausalLM` removes a discarded 151,936-wide vocabulary projection
+that allocated **81.67 GiB** and OOMed a 48GB card on a 2,237-token prompt the
+trunk handles trivially. On the exact failing row it now completes at 29.3GB
+peak with scores bit-identical (max abs difference `0.00e+00`). The
+zero-delta `choice` and `score` figures confirm it costs no accuracy. The
+final-norm hook and gather-before-cast are value-preserving by construction.
+
+**Where the 6 `noul` items actually went.** The positive-label probability moved
+a long way on these items (deltas of −0.74 to +0.42, none near the 0.5
+boundary), so this is not calibration drift. Splitting by state length:
+
+| | lost | total | loss rate |
+|---|---|---|---|
+| noul, state fits in 512 tokens | 4 | 65 | 6.2% |
+| noul, state exceeds 512 tokens | 3 | 9 | **33.3%** |
+| choice, any length | 0 | 139 | 0% |
+| score, any length | 0 | 18 | 0% |
+
+Two effects, and we have not isolated a single cause for the 4 short-state
+`noul` losses. The 3 long-state losses are the clear signal: the previous
+configuration ran `ctx=512` **with truncation**, so on those items it was
+reading a cut state and now reads the whole one. On long `noul` items, more
+context measurably hurts this head.
+
+**This corrects an earlier claim in this card.** We previously wrote that longer
+context "does not hurt" and that the head is "not out of distribution past 512."
+That was measured on `choice` items and does not hold for `noul`: the 33.3%
+long-`noul` loss rate above falsifies it. The 32,768 limit is kept because
+refusing an item scores as wrong under coverage adjustment, and because the
+Decision Index corpus genuinely contains 56 items over 512 tokens that would
+otherwise be refused — but the honest statement is that it *costs* accuracy on
+long `noul` items while *buying* coverage, and we have not yet found a setting
+that gets both.
+
+We report the lower number because it is what the shipped artifact scores. The
+previous 74.46% was measured at `ctx=512` with truncation enabled and the
+vocabulary projection present, so it described an engine that crashes on its own
+worst inputs.
 
 **The grader is validated, not assumed.** The same grader applied to the older
 run's recorded probabilities returns **173/231**, against the published
@@ -272,12 +307,13 @@ capacity limit on the widest item in the suite, not a correctness failure.
   sample of the 0.1 corpus, not the full 132,422.
 - **Context is 32,768 tokens with no truncation**, up from 512. An over-limit
   prompt is refused as `Unsupported` rather than cut, per the panel's rules. The
-  head was *trained* on prompts under 512 tokens; the engine's provenance
-  records that, along with the measurement showing the head is not out of
-  distribution past 512 (28/56 correct at full length versus 29/56 truncated on
-   the public items that exceed 512 tokens). `GAVEL_TRUNCATE=1` restores the old
-   truncating behaviour, which reproduces the superseded 74.46% figure
-   (173/231 when re-graded with the validated grader).
+  head was *trained* on prompts under 512 tokens. Raising the limit buys
+  coverage and costs accuracy on long `noul` items — see the noul table under
+  Measured performance, where long-state `noul` loses 33.3% when the state is no
+  longer truncated while `choice` and `score` lose nothing. The earlier claim
+  that longer context was free is withdrawn. `GAVEL_TRUNCATE=1` restores the old
+  truncating behaviour, which reproduces the superseded 74.46% figure
+  (173/231 when re-graded with the validated grader).
 - **`score` items remain a genuine failure mode**, at 3/18 = 16.67% on the
   shipping config. This is pre-existing rather than introduced by the loader
   changes, and consistent with the `ordinal` 0/12 below; the head has no
